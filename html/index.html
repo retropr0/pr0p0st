@@ -324,6 +324,10 @@
                 return ({corner: -1, image: -1});
             }
 
+            $("#a-download-png").on("click", function () {
+               $(this).attr("href", pr0Canvas[0].toDataURL("image/png").replace("image/png", "image/octet-stream"));
+                $(this).attr("download", "OC.png");
+            });
 
         });
 
@@ -336,6 +340,7 @@
         <textarea id="imagetext" style="width: 800px;" rows="23">${f.large}&#10;pr0p0st&#10;${f.medium}${c.orange}auf Github ${c.white}yay ${f.small}${c.orange}ooo</textarea><br>
         <input type="checkbox" id="cb-edit-images"> Show image anchors<br>
         <i>Shift+Click to delete image<br>Markers: ${c.orange}, ${c.white}, ${f.large}, ${f.medium}, ${f.small}</i>
+        <h3><a href="#" id="a-download-png">Download PNG</a></h3>
     </div>
 </body>
 </html>
