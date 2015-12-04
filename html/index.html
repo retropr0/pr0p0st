@@ -96,6 +96,7 @@
 
             var textArea = $("#imagetext");
             var pr0Canvas = $("#pr0Canvas");
+            var bcr = pr0Canvas[0].getBoundingClientRect();
             var colors = {"c.white": "#ffffff", "c.orange": "#ee4d2e"};
             var fonts = {"f.small": "bold 14px Arial", "f.medium": "bold 20px Arial", "f.large": "bold 60px Arial"};
             var content = {"text": textArea.val(), "images": []};
@@ -151,8 +152,9 @@
             pr0Canvas.mouseout(function(e){handleMouseOut(e);});
 
             function handleMouseDown(e){
-                startX = parseInt(e.clientX - pr0Canvas.offset().left);
-                startY = parseInt(e.clientY - pr0Canvas.offset().top);
+                bcr = pr0Canvas[0].getBoundingClientRect();
+                startX = parseInt(e.clientX - bcr.left);
+                startY = parseInt(e.clientY - bcr.top);
 
                 if (e.shiftKey) {
                     var img = hitImage(startX, startY);
@@ -189,9 +191,9 @@
 //                }
 
                 if (draggingResizer.image > -1) {
-
-                    mouseX = parseInt(e.clientX - pr0Canvas.offset().left);
-                    mouseY = parseInt(e.clientY - pr0Canvas.offset().top);
+                    bcr = pr0Canvas[0].getBoundingClientRect();
+                    mouseX = parseInt(e.clientX - bcr.left);
+                    mouseY = parseInt(e.clientY - bcr.top);
 
                     var imageX = content.images[draggingResizer.image].pos.x;
                     var imageY = content.images[draggingResizer.image].pos.y;
@@ -239,9 +241,9 @@
                     drawContent(content, ctx.canvas.width, ctx.canvas.height);
 
                 } else if (draggingImage > -1) {
-
-                    mouseX = parseInt(e.clientX - pr0Canvas.offset().left);
-                    mouseY = parseInt(e.clientY - pr0Canvas.offset().top);
+                    bcr = pr0Canvas[0].getBoundingClientRect();
+                    mouseX = parseInt(e.clientX - bcr.left);
+                    mouseY = parseInt(e.clientY - bcr.top);
 
                     // move the image by the amount of the latest drag
                     var dx = mouseX - startX;
@@ -331,7 +333,7 @@
 <body style="background-color: darkgray;">
     <div style="width: 100%;text-align: center;">
         <canvas id="pr0Canvas"></canvas><br>
-        <textarea id="imagetext" style="width: 800px;" rows="23">${f.large}pr0p0st&#10;&#10;${f.medium}${c.orange}auf Github ${c.white}yay ${f.small}${c.orange}ooo</textarea><br>
+        <textarea id="imagetext" style="width: 800px;" rows="23">${f.large}&#10;pr0p0st&#10;${f.medium}${c.orange}auf Github ${c.white}yay ${f.small}${c.orange}ooo</textarea><br>
         <input type="checkbox" id="cb-edit-images"> Show image anchors<br>
         <i>Shift+Click to delete image<br>Markers: ${c.orange}, ${c.white}, ${f.large}, ${f.medium}, ${f.small}</i>
     </div>
