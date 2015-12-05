@@ -87,8 +87,8 @@
                 var highestElement = y > lowestImage ? y : lowestImage;
 
                 if (widestElement > 1052) {
-                    $('#warn').html("<p>Warnung: pr0' Content ist 1052px Breit, dieses Bild ist Breiter!</p>")
-                    $('#warn').css("display", "block");
+                  $('#warn').html("<p>Warnung: pr0' Content ist 1052px Breit, dieses Bild ist "+Math.ceil(widestElement)+"px breit!</p>");
+                  $('#warn').css("display", "block");
                 } else {
                     $('#warn').html('');
                     $('#warn').css("display", "none");
@@ -344,7 +344,36 @@
                 $(this).attr("download", "OC.png");
             });
 
+
+            // Button Functions
+            $('#flarge').click(function() {
+              $('#imagetext').val($('#imagetext').val()+'${f.large}');
+              $('#imagetext').focus();
+            });
+            $('#fmedium').click(function() {
+              $('#imagetext').val($('#imagetext').val()+'${f.medium}');
+              $('#imagetext').focus();
+            });
+            $('#fsmall').click(function() {
+              $('#imagetext').val($('#imagetext').val()+'${f.small}');
+              $('#imagetext').focus();
+            });
+            $('#forange').click(function() {
+              $('#imagetext').val($('#imagetext').val()+'${f.orange}');
+              $('#imagetext').focus();
+            });
+            $('#fwhite').click(function() {
+              $('#imagetext').val($('#imagetext').val()+'${f.white}');
+              $('#imagetext').focus();
+            });
+            $('#fclear').click(function() {
+              $('#imagetext').val('');
+              $('#imagetext').focus();
+            });
+
         });
+
+
 
     </script>
 
@@ -355,6 +384,14 @@
     </div>
     <div id="content-input">
         <div id="warn"></div>
+        <div id="controls">
+          <button class="btn" id="flarge">Large Text</button>
+          <button class="btn" id="fmedium">Medium Text</button>
+          <button class="btn" id="fsmall">Small Text</button>
+          <button class="btn" id="forange">Orange Text</button>
+          <button class="btn" id="fwhite">White Text</button>
+          <button class="btn" id="fclear">Clear All!</button>
+        </div>
         <textarea id="imagetext" style="width: 800px;" rows="23">${f.large}&#10;pr0p0st&#10;${f.medium}${c.orange}auf Github ${c.white}yay ${f.small}${c.orange}ooo</textarea>
         <div id="hints">
             <fieldset>
