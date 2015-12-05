@@ -76,6 +76,7 @@ $(function() {
 
         if (widestElement > 1052) {
             $('#warn').html("<p>Warnung: pr0' Content ist 1052px Breit, dieses Bild ist "+Math.ceil(widestElement)+"px breit!</p>");
+            $('#warn p').attr('unselectable', 'on').css('user-select', 'none').on('selectstart', false);
             $('#warn').css("display", "block");
         } else {
             $('#warn').html('');
