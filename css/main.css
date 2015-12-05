@@ -33,6 +33,12 @@ input[type=checkbox], input[type=radio], input[type=range] {
   margin: 10px;
 }
 
+#imagetext {
+    padding: 5px;
+    background-color: #1B1E1F;
+    color: #bbb;
+}
+
 #content-input {
     display: inline-block;
 }
