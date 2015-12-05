@@ -1,5 +1,7 @@
 $(function() {
+
     var drawContent = function(content, width, height) {
+
         ctx.fillStyle = "#161618";
         ctx.fillRect(0, 0, width, height);
         ctx.font = "bold 20px Arial";
@@ -56,6 +58,7 @@ $(function() {
 
         //Images
         for (var f = 0;f < content.images.length; ++f) {
+
             var img = content.images[f];
             ctx.drawImage(img.img, 0, 0, img.img.width, img.img.height, img.pos.x, img.pos.y, img.size.width, img.size.height);
 
@@ -75,8 +78,8 @@ $(function() {
         var highestElement = y > lowestImage ? y : lowestImage;
 
         if (widestElement > 1052) {
-          $('#warn').html("<p>Warnung: pr0' Content ist 1052px Breit, dieses Bild ist "+Math.ceil(widestElement)+"px breit!</p>");
-          $('#warn').css("display", "block");
+            $('#warn').html("<p>Warnung: pr0' Content ist 1052px Breit, dieses Bild ist "+Math.ceil(widestElement)+"px breit!</p>");
+            $('#warn').css("display", "block");
         } else {
             $('#warn').html('');
             $('#warn').css("display", "none");
@@ -87,7 +90,9 @@ $(function() {
             ctx.canvas.height = highestElement;
             drawContent(content, ctx.canvas.width, ctx.canvas.height);
         }
+
     };
+
 
     var textArea = $("#imagetext");
     var pr0Canvas = $("#pr0Canvas");
@@ -180,6 +185,7 @@ $(function() {
     }
 
     function handleMouseMove(e){
+
 //                if (!withAnchors) {
 //                    withAnchors = true;
 //                    drawContent(content, ctx.canvas.width, ctx.canvas.height);
@@ -280,9 +286,11 @@ $(function() {
     }
 
     function anchorHitTest(x, y) {
+
         var dx, dy;
 
         for (var i = 0;i < content.images.length; ++i) {
+
             var imageX = content.images[i].pos.x;
             var imageY = content.images[i].pos.y;
             var imageRight = content.images[i].size.width + imageX;
@@ -312,6 +320,7 @@ $(function() {
             if (dx * dx + dy * dy <= 64) {
                 return ({corner: 3, image: i});
             }
+
         }
         return ({corner: -1, image: -1});
     }
@@ -328,33 +337,35 @@ $(function() {
 
 
     // Button Functions
+
+    function addTextAtCursor(text){
+        var caretPos = textArea.get(0).selectionStart;
+        var textAreaTxt = textArea.val();
+        textArea.val(textAreaTxt.substring(0, caretPos) + text + textAreaTxt.substring(caretPos));
+        textArea.focus();
+        textArea.get(0).setSelectionRange(caretPos + text.length, caretPos + text.length);
+        content.text = textArea.val();
+        drawContent(content, ctx.canvas.width, ctx.canvas.height);
+    }
+
     $('#flarge').click(function() {
-      $('#imagetext').val($('#imagetext').val()+'${f.large}');
-      $('#imagetext').focus();
+        addTextAtCursor('${f.large}');
     });
-
     $('#fmedium').click(function() {
-      $('#imagetext').val($('#imagetext').val()+'${f.medium}');
-      $('#imagetext').focus();
+        addTextAtCursor('${f.medium}');
     });
-
     $('#fsmall').click(function() {
-      $('#imagetext').val($('#imagetext').val()+'${f.small}');
-      $('#imagetext').focus();
+        addTextAtCursor('${f.small}');
     });
-
     $('#forange').click(function() {
-      $('#imagetext').val($('#imagetext').val()+'${f.orange}');
-      $('#imagetext').focus();
+        addTextAtCursor('${c.orange}');
     });
-
     $('#fwhite').click(function() {
-      $('#imagetext').val($('#imagetext').val()+'${f.white}');
-      $('#imagetext').focus();
+        addTextAtCursor('${c.white}');
+    });
+    $('#fclear').click(function() {
+        textArea.val('');
+        textArea.focus();
     });
 
-    $('#fclear').click(function() {
-      $('#imagetext').val('');
-      $('#imagetext').focus();
-    });
 });
