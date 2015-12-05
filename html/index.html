@@ -335,7 +335,36 @@
                 $(this).attr("download", "OC.png");
             });
 
+
+            // Button Functions
+            $('#flarge').click(function() {
+              $('#imagetext').val($('#imagetext').val()+'${f.large}');
+              $('#imagetext').focus();
+            });
+            $('#fmedium').click(function() {
+              $('#imagetext').val($('#imagetext').val()+'${f.medium}');
+              $('#imagetext').focus();
+            });
+            $('#fsmall').click(function() {
+              $('#imagetext').val($('#imagetext').val()+'${f.small}');
+              $('#imagetext').focus();
+            });
+            $('#forange').click(function() {
+              $('#imagetext').val($('#imagetext').val()+'${f.orange}');
+              $('#imagetext').focus();
+            });
+            $('#fwhite').click(function() {
+              $('#imagetext').val($('#imagetext').val()+'${f.white}');
+              $('#imagetext').focus();
+            });
+            $('#fclear').click(function() {
+              $('#imagetext').val('');
+              $('#imagetext').focus();
+            });
+
         });
+
+
 
     </script>
 
@@ -344,6 +373,14 @@
     <div style="width: 100%;text-align: center;">
         <canvas id="pr0Canvas"></canvas><br>
         <div id="warn"></div>
+        <div id="controls">
+          <button class="btn" id="flarge">Large Text</button>
+          <button class="btn" id="fmedium">Medium Text</button>
+          <button class="btn" id="fsmall">Small Text</button>
+          <button class="btn" id="forange">Orange Text</button>
+          <button class="btn" id="fwhite">White Text</button>
+          <button class="btn" id="fclear">Clear All!</button>
+        </div>
         <textarea id="imagetext" style="width: 800px;" rows="23">${f.large}&#10;pr0p0st&#10;${f.medium}${c.orange}auf Github ${c.white}yay ${f.small}${c.orange}ooo</textarea><br>
         <input type="checkbox" id="cb-edit-images"> Show image anchors<br>
         <i>Shift+Click to delete image<br>Markers: ${c.orange}, ${c.white}, ${f.large}, ${f.medium}, ${f.small}</i>
