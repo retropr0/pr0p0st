@@ -7,38 +7,53 @@
     <link rel="stylesheet" href="../css/main.css">
 </head>
 <body>
-    <h1>pr0p0st generator</h1>
-    <div id="content-output">
-        <canvas id="pr0Canvas"></canvas>
+<h1>pr0p0st generator</h1>
+
+<div id="content-output">
+    <canvas id="pr0Canvas"></canvas>
+</div>
+<div id="content-input">
+
+    <div id="warn"></div>
+
+    <div id="controls">
+        <div id="colorbuttons">
+            <button class="btn-colored-circle fliese"></button>
+            <button class="btn-colored-circle banned"></button>
+            <button class="btn-colored-circle orange"></button>
+            <button class="btn-colored-circle schwuchtel"></button>
+            <button class="btn-colored-circle neuschwuchtel"></button>
+            <button class="btn-colored-circle pr0mium"></button>
+            <button class="btn-colored-circle altschwuchtel"></button>
+            <button class="btn-colored-circle moderator"></button>
+            <button class="btn-colored-circle admin"></button>
+        </div>
+        <div id="extrabuttons">
+            <button class="btn" id="fsmall">small</button>
+            <button class="btn" id="fmedium">medium</button>
+            <button class="btn" id="flarge">large</button>
+            <button class="btn" id="fclear">Clear All!</button>
+            <button class="btn" id="help">Help!</button> <!-- TODO: add functionality (Modales Fenster oder so) -->
+        </div>
     </div>
-    <div id="content-input">
-        <div id="warn"></div>
-        <div id="controls">
-          <button class="btn" id="flarge">Large Text</button>
-          <button class="btn" id="fmedium">Medium Text</button>
-          <button class="btn" id="fsmall">Small Text</button>
-          <button class="btn" id="forange">Orange Text</button>
-          <button class="btn" id="fwhite">White Text</button>
-          <button class="btn" id="fclear">Clear All!</button>
-          <button class="btn" id="help">Help!</button> <!-- TODO: add functionality (Modales Fenster oder so) -->
-        </div>
-        <textarea id="imagetext" style="width: 800px;" rows="23">${f.large}&#10;pr0p0st&#10;${f.medium}${c.orange}auf Github ${c.white}yay ${f.small}${c.orange}ooo</textarea>
-        <div id="hints">
-            <fieldset>
-                <legend>Hints</legend>
-                <span>Shift+Click to delete image</span>
-                <span>Markers: ${c.orange}, ${c.white}, ${f.large}, ${f.medium}, ${f.small}</span>
-            </fieldset>
-        </div>
-        <div id="settings">
-            <fieldset>
-                <legend>Settings</legend>
-                <p><label for="cb-edit-images" class="field">Image anchors </label><input type="checkbox" checked id="cb-edit-images"></p>
-                <!--<p><label for="range-image-quality" class="field">Image quality </label><input type="range" min="10" value="100" id="range-image-quality"></p>-->
-            </fieldset>
-        </div>
-        <div id="download"><h3><a href="#" id="a-download-png">Download PNG</a></h3></div>
+    <textarea id="imagetext" style="width: 800px;" rows="23">${f.large}&#10;pr0p0st&#10;${f.medium}${c.orange}auf Github ${c.white}yay ${f.small}${c.orange}ooo</textarea>
+
+    <div id="hints">
+        <fieldset>
+            <legend>Hints</legend>
+            <span>Shift+Click to delete image</span>
+            <span>Markers: ${c.orange}, ${c.white}, ${f.large}, ${f.medium}, ${f.small}</span>
+        </fieldset>
     </div>
-    <script src="../js/pr0p0st.js"></script>
+    <div id="settings">
+        <fieldset>
+            <legend>Settings</legend>
+            <p><label for="cb-edit-images" class="field">Image anchors </label><input type="checkbox" checked id="cb-edit-images"></p>
+            <!--<p><label for="range-image-quality" class="field">Image quality </label><input type="range" min="10" value="100" id="range-image-quality"></p>-->
+        </fieldset>
+    </div>
+    <div id="download"><h3><a href="#" id="a-download-png">Download PNG</a></h3></div>
+</div>
+<script src="../js/pr0p0st.js"></script>
 </body>
 </html>

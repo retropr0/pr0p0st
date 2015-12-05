@@ -1,6 +1,6 @@
 * {
-  padding: 0;
-  margin: 0;
+    padding: 0;
+    margin: 0;
 }
 
 body {
@@ -11,12 +11,12 @@ body {
 }
 
 h1 {
-  font-family: sans-serif;
-  margin: 1em;
+    font-family: sans-serif;
+    margin: 1em;
 }
 
 h3 {
-  margin: .75em;
+    margin: .75em;
 }
 
 input[type=checkbox], input[type=radio], input[type=range] {
@@ -26,11 +26,11 @@ input[type=checkbox], input[type=radio], input[type=range] {
 }
 
 #content-output {
-  background-color: #4f4f4f;
+    background-color: #4f4f4f;
 }
 
 #pr0Canvas {
-  margin: 10px;
+    margin: 10px;
 }
 
 #imagetext {
@@ -51,7 +51,7 @@ input[type=checkbox], input[type=radio], input[type=range] {
     padding: .5em;
 }
 
-#hints fieldset{
+#hints fieldset {
     text-align: left;
     border: 1px solid;
     padding: .3em;
@@ -76,30 +76,107 @@ input[type=checkbox], input[type=radio], input[type=range] {
 }
 
 #controls {
-  background-color: #161618;
+    position: relative;
+    background-color: #161618;
 }
 
 .btn {
-	background: #161618 none repeat scroll 0 0;
-  border: none;
-  color: #aaa;
-	font-family: Arial;
-	font-weight: bold;
-	margin: 5px 5px;
-	text-decoration: none;
-	height: 40px;
-	text-align: center;
+    background: #161618 none repeat scroll 0 0;
+    border: none;
+    color: #aaa;
+    font-family: Arial;
+    font-weight: bold;
+    margin: 5px 5px;
+    text-decoration: none;
+    height: 40px;
+    text-align: center;
 }
 
 .btn:hover {
-  cursor: pointer;
-  color: #ee4d2e;
+    cursor: pointer;
+    color: #ee4d2e;
 }
 
 .btn:focus {
-  outline: none;
+    outline: none;
+}
+
+#colorbuttons {
+    padding-top: 8px;
+    float: left;
+}
+
+#extrabuttons {
+    float: right;
+}
+
+#flarge {
+    font-size: 24px;
+}
+
+#fmedium {
+    font-size: 16px;
+}
+
+#fsmall {
+    font-size: 12px;
+}
+
+.btn-colored-circle {
+    vertical-align: bottom;
+    width:25px;
+    height:25px;
+    margin: 5px 5px;
+    border-radius: 50%;
+    background: #464646;
+    border: none;
+}
+
+.btn-colored-circle:hover {
+    cursor: pointer;
+}
+
+.btn-colored-circle.orange {
+    background-color: #ee4d2e;
+}
+
+.btn-colored-circle.pr0mium {
+    /*Edler Spender, Lebende Legende*/
+    background-color: #1cb992;
+}
+
+.btn-colored-circle.neuschwuchtel {
+    background-color: #e208ea;
+}
+
+.btn-colored-circle.schwuchtel {
+    background-color: #ffffff;
+}
+
+.btn-colored-circle.altschwuchtel {
+    background-color: #5bb91c;
+}
+
+.btn-colored-circle.moderator {
+    background-color: #008fff;
+}
+
+.btn-colored-circle.admin {
+    background-color: #ff9900;
+}
+
+.btn-colored-circle.fliese {
+    background-color: #6c432b;
+    width:15px;
+    height:15px;
+}
+
+.btn-colored-circle.banned {
+    background-color: #444444;
+    width:15px;
+    height:15px;
 }
 
 #help {
-  cursor: not-allowed;
+    cursor: not-allowed;
 }

@@ -1,4 +1,5 @@
 $(function() {
+
     var drawContent = function(content, width, height) {
         ctx.fillStyle = "#161618";
         ctx.fillRect(0, 0, width, height);
@@ -95,7 +96,7 @@ $(function() {
     var textArea = $("#imagetext");
     var pr0Canvas = $("#pr0Canvas");
     var bcr = pr0Canvas[0].getBoundingClientRect();
-    var colors = {"c.white": "#ffffff", "c.orange": "#ee4d2e"};
+    var colors = {"c.fliese": "#6c432b", "c.banned": "#444444", "c.white": "#ffffff", "c.orange": "#ee4d2e", "c.cyan": "#1cb992", "c.pink": "#e208ea", "c.alt": "#5bb91c", "c.mod": "#008fff", "c.admin": "#ff9900"};
     var fonts = {"f.small": "bold 14px Arial", "f.medium": "bold 20px Arial", "f.large": "bold 60px Arial"};
     var content = {"text": textArea.val(), "images": []};
     var draggingImage = -1;
@@ -262,7 +263,7 @@ $(function() {
     function drawDragAnchor(x, y) {
         ctx.beginPath();
         var styletmp = ctx.fillStyle;
-        ctx.fillStyle = colors.orange;
+        ctx.fillStyle = colors["c.orange"];
         ctx.arc(x, y, 8, 0, Math.PI * 2, false);
         ctx.closePath();
         ctx.fill();
@@ -351,14 +352,39 @@ $(function() {
     $('#fsmall').click(function() {
         addTextAtCursor('${f.small}');
     });
-    $('#forange').click(function() {
+    $('.btn-colored-circle.fliese').on('click', function() {
+        addTextAtCursor('${c.fliese}');
+    });
+    $('.btn-colored-circle.banned').on('click', function() {
+        addTextAtCursor('${c.banned}');
+    });
+    $('.btn-colored-circle.orange').on('click', function() {
         addTextAtCursor('${c.orange}');
     });
-    $('#fwhite').click(function() {
+    $('.btn-colored-circle.schwuchtel').on('click', function() {
         addTextAtCursor('${c.white}');
     });
+    $('.btn-colored-circle.neuschwuchtel').on('click', function() {
+        addTextAtCursor('${c.pink}');
+    });
+    $('.btn-colored-circle.pr0mium').on('click', function() {
+        addTextAtCursor('${c.cyan}');
+    });
+    $('.btn-colored-circle.altschwuchtel').on('click', function() {
+        addTextAtCursor('${c.alt}');
+    });
+    $('.btn-colored-circle.moderator').on('click', function() {
+        addTextAtCursor('${c.mod}');
+    });
+    $('.btn-colored-circle.admin').on('click', function() {
+        addTextAtCursor('${c.admin}');
+    });
     $('#fclear').click(function() {
-        textArea.val('');
-        textArea.focus();
+        if (window.confirm("Danach ist alles weg, bist du dir sicher?")) {
+            textArea.val('');
+            content.text = "";
+            content.images = [];
+            drawContent(content, ctx.canvas.width, ctx.canvas.height);
+        }
     });
 });
