@@ -117,14 +117,13 @@ $(function() {
 
     pr0Canvas.on('dragover', function (e) {
         var event = e.originalEvent;
-        if (event.preventDefault) {
-            event.preventDefault();
-        }
+        e.preventDefault();
         event.dataTransfer.dropEffect = 'copy';
         return false;
     });
 
     pr0Canvas.on('drop', function (e) {
+        var event = e.originalEvent;
         e.preventDefault();
         var file = event.dataTransfer.files[0];
 
