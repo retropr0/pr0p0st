@@ -1,0 +1,51 @@
+body {
+    background-color: #4f4f4f;
+    text-align: center;
+    color: #ee4d2e;
+    font-family: "Courier 10 Pitch"
+}
+
+input[type=checkbox], input[type=radio], input[type=range] {
+    vertical-align: middle;
+    position: relative;
+    bottom: 1px;
+}
+
+#content-input {
+    display: inline-block;
+
+}
+
+#warn {
+    display: none;
+    border: 1px solid;
+    margin-bottom: 10px;
+    background-color: rgba(238, 77, 46, 0.28);
+}
+
+#hints fieldset{
+    text-align: left;
+    border: 1px solid;
+}
+
+#hints span {
+    display: block;
+}
+
+#settings fieldset {
+    color: white;
+    border: 1px solid;
+    text-align: left;
+    margin-top: 10px;
+}
+
+#settings div {
+    display: table-cell;
+    vertical-align: middle;
+    height: 50px;
+    border: 1px solid red;
+}
+
+#download a {
+    color: white;
+}

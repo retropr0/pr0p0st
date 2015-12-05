@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>pr0p0st</title>
     <script type="text/javascript" src="../js/jquery-2.1.4.min.js"></script>
+    <link rel="stylesheet" href="../css/main.css">
     <script type="text/javascript">
 
         $(function() {
@@ -86,9 +87,11 @@
                 var highestElement = y > lowestImage ? y : lowestImage;
 
                 if (widestElement > 1052) {
-                  $('#warn').html("<p>Warnung: pr0' Content ist 1052px Breit, dieses Bild ist Breiter!</p>")
+                    $('#warn').html("<p>Warnung: pr0' Content ist 1052px Breit, dieses Bild ist Breiter!</p>")
+                    $('#warn').css("display", "block");
                 } else {
-                  $('#warn').html('');
+                    $('#warn').html('');
+                    $('#warn').css("display", "none");
                 }
 
                 if ((widestElement | 0) != ctx.canvas.width || (highestElement | 0) != ctx.canvas.height) {
@@ -110,7 +113,7 @@
             var draggingResizer = {corner: -1, image: -1};
             var startX = 0;
             var startY = 0;
-            var withAnchors = false;
+            var withAnchors = true;
 
             var ctx = pr0Canvas[0].getContext('2d');
 
@@ -157,6 +160,7 @@
             pr0Canvas.mouseup(function(e){handleMouseUp(e);});
             pr0Canvas.mouseout(function(e){handleMouseOut(e);});
 
+            //Partly taken from http://jsfiddle.net/m1erickson/LAS8L/
             function handleMouseDown(e){
                 bcr = pr0Canvas[0].getBoundingClientRect();
                 startX = parseInt(e.clientX - bcr.left);
@@ -331,7 +335,12 @@
             }
 
             $("#a-download-png").on("click", function () {
-               $(this).attr("href", pr0Canvas[0].toDataURL("image/png").replace("image/png", "image/octet-stream"));
+                $("#cb-edit-images").prop("checked", false);
+                withAnchors = false;
+                drawContent(content, ctx.canvas.width, ctx.canvas.height);
+                //TODO: Alter quality/compression for png.
+                var quality = 1.0; //parseFloat($("#range-image-quality").val() / 100).toFixed(2);
+                $(this).attr("href", pr0Canvas[0].toDataURL("image/png", quality));
                 $(this).attr("download", "OC.png");
             });
 
@@ -340,14 +349,28 @@
     </script>
 
 </head>
-<body style="background-color: darkgray;">
-    <div style="width: 100%;text-align: center;">
+<body>
+    <div id="content-output">
         <canvas id="pr0Canvas"></canvas><br>
+    </div>
+    <div id="content-input">
         <div id="warn"></div>
-        <textarea id="imagetext" style="width: 800px;" rows="23">${f.large}&#10;pr0p0st&#10;${f.medium}${c.orange}auf Github ${c.white}yay ${f.small}${c.orange}ooo</textarea><br>
-        <input type="checkbox" id="cb-edit-images"> Show image anchors<br>
-        <i>Shift+Click to delete image<br>Markers: ${c.orange}, ${c.white}, ${f.large}, ${f.medium}, ${f.small}</i>
-        <h3><a href="#" id="a-download-png">Download PNG</a></h3>
+        <textarea id="imagetext" style="width: 800px;" rows="23">${f.large}&#10;pr0p0st&#10;${f.medium}${c.orange}auf Github ${c.white}yay ${f.small}${c.orange}ooo</textarea>
+        <div id="hints">
+            <fieldset>
+                <legend>Hints</legend>
+                <span>Shift+Click to delete image</span>
+                <span>Markers: ${c.orange}, ${c.white}, ${f.large}, ${f.medium}, ${f.small}</span>
+            </fieldset>
+        </div>
+        <div id="settings">
+            <fieldset>
+                <legend>Settings</legend>
+                <p><label for="cb-edit-images" class="field">Image anchors </label><input type="checkbox" checked id="cb-edit-images"></p>
+                <!--<p><label for="range-image-quality" class="field">Image quality </label><input type="range" min="10" value="100" id="range-image-quality"></p>-->
+            </fieldset>
+        </div>
+        <div id="download"><h3><a href="#" id="a-download-png">Download PNG</a></h3></div>
     </div>
 </body>
 </html>
