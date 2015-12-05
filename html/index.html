@@ -87,12 +87,8 @@
                 var highestElement = y > lowestImage ? y : lowestImage;
 
                 if (widestElement > 1052) {
-<<<<<<< HEAD
                   $('#warn').html("<p>Warnung: pr0' Content ist 1052px Breit, dieses Bild ist "+Math.ceil(widestElement)+"px breit!</p>");
-=======
-                    $('#warn').html("<p>Warnung: pr0' Content ist 1052px Breit, dieses Bild ist Breiter!</p>")
-                    $('#warn').css("display", "block");
->>>>>>> upstream/gh-pages
+                  $('#warn').css("display", "block");
                 } else {
                     $('#warn').html('');
                     $('#warn').css("display", "none");
@@ -388,7 +384,6 @@
     </div>
     <div id="content-input">
         <div id="warn"></div>
-<<<<<<< HEAD
         <div id="controls">
           <button class="btn" id="flarge">Large Text</button>
           <button class="btn" id="fmedium">Medium Text</button>
@@ -397,11 +392,6 @@
           <button class="btn" id="fwhite">White Text</button>
           <button class="btn" id="fclear">Clear All!</button>
         </div>
-        <textarea id="imagetext" style="width: 800px;" rows="23">${f.large}&#10;pr0p0st&#10;${f.medium}${c.orange}auf Github ${c.white}yay ${f.small}${c.orange}ooo</textarea><br>
-        <input type="checkbox" id="cb-edit-images"> Show image anchors<br>
-        <i>Shift+Click to delete image<br>Markers: ${c.orange}, ${c.white}, ${f.large}, ${f.medium}, ${f.small}</i>
-        <h3><a href="#" id="a-download-png">Download PNG</a></h3>
-=======
         <textarea id="imagetext" style="width: 800px;" rows="23">${f.large}&#10;pr0p0st&#10;${f.medium}${c.orange}auf Github ${c.white}yay ${f.small}${c.orange}ooo</textarea>
         <div id="hints">
             <fieldset>
@@ -418,7 +408,6 @@
             </fieldset>
         </div>
         <div id="download"><h3><a href="#" id="a-download-png">Download PNG</a></h3></div>
->>>>>>> upstream/gh-pages
     </div>
 </body>
 </html>

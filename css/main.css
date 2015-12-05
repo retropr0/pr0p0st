@@ -49,3 +49,22 @@ input[type=checkbox], input[type=radio], input[type=range] {
 #download a {
     color: white;
 }
+
+#controls {
+  background-color: #161618;
+}
+.btn {
+	background: #161618 none repeat scroll 0 0;
+  border: none;
+  color: #aaa;
+	font-family: Arial;
+	font-weight: bold;
+	margin: 5px 5px;
+	text-decoration: none;
+	height: 35px;
+	text-align: center;
+}
+.btn:hover {
+  cursor: pointer;
+  color: #ee4d2e;
+}
