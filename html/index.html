@@ -346,29 +346,33 @@
 
 
             // Button Functions
+            
+            function addTextAtCursor(text){
+	            var caretPos = textArea.get(0).selectionStart;
+            	var textAreaTxt = textArea.val();
+            	textArea.val(textAreaTxt.substring(0, caretPos) + text + textAreaTxt.substring(caretPos));
+            	textArea.get(0).selectionStart = caretPos + text.length;
+            	textArea.focus();
+            }
+            
             $('#flarge').click(function() {
-              $('#imagetext').val($('#imagetext').val()+'${f.large}');
-              $('#imagetext').focus();
+              addTextAtCursor('${f.large}');
             });
             $('#fmedium').click(function() {
-              $('#imagetext').val($('#imagetext').val()+'${f.medium}');
-              $('#imagetext').focus();
+              $addTextAtCursor('${f.medium}');
             });
             $('#fsmall').click(function() {
-              $('#imagetext').val($('#imagetext').val()+'${f.small}');
-              $('#imagetext').focus();
+              addTextAtCursor('${f.small}');
             });
             $('#forange').click(function() {
-              $('#imagetext').val($('#imagetext').val()+'${f.orange}');
-              $('#imagetext').focus();
+              addTextAtCursor('${f.orange}');
             });
             $('#fwhite').click(function() {
-              $('#imagetext').val($('#imagetext').val()+'${f.white}');
-              $('#imagetext').focus();
+              addTextAtCursor('${f.white}');
             });
             $('#fclear').click(function() {
-              $('#imagetext').val('');
-              $('#imagetext').focus();
+              textArea.val('');
+              textArea.focus();
             });
 
         });
