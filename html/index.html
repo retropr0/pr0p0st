@@ -346,7 +346,7 @@
 
 
             // Button Functions
-            
+
             function addTextAtCursor(text){
 	            var caretPos = textArea.get(0).selectionStart;
             	var textAreaTxt = textArea.val();
@@ -356,7 +356,7 @@
                 content.text = textArea.val();
                 drawContent(content, ctx.canvas.width, ctx.canvas.height);
             }
-            
+
             $('#flarge').click(function() {
               addTextAtCursor('${f.large}');
             });
@@ -385,8 +385,9 @@
 
 </head>
 <body>
+    <h1>pr0p0st generator</h1>
     <div id="content-output">
-        <canvas id="pr0Canvas"></canvas><br>
+        <canvas id="pr0Canvas"></canvas>
     </div>
     <div id="content-input">
         <div id="warn"></div>
@@ -397,6 +398,7 @@
           <button class="btn" id="forange">Orange Text</button>
           <button class="btn" id="fwhite">White Text</button>
           <button class="btn" id="fclear">Clear All!</button>
+          <button class="btn" id="help">Help!</button> <!-- TODO: add functionality (Modales Fenster oder so) -->
         </div>
         <textarea id="imagetext" style="width: 800px;" rows="23">${f.large}&#10;pr0p0st&#10;${f.medium}${c.orange}auf Github ${c.white}yay ${f.small}${c.orange}ooo</textarea>
         <div id="hints">
@@ -415,5 +417,6 @@
         </div>
         <div id="download"><h3><a href="#" id="a-download-png">Download PNG</a></h3></div>
     </div>
+    <script src="../js/pr0p0st.js"></script>
 </body>
 </html>
