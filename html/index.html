@@ -85,6 +85,12 @@
                 var widestElement = widestLine > widestImage ? widestLine : widestImage;
                 var highestElement = y > lowestImage ? y : lowestImage;
 
+                if (widestElement > 1052) {
+                  $('#warn').html("<p>Warnung: pr0' Content ist 1052px Breit, dieses Bild ist Breiter!</p>")
+                } else {
+                  $('#warn').html('');
+                }
+
                 if ((widestElement | 0) != ctx.canvas.width || (highestElement | 0) != ctx.canvas.height) {
                     ctx.canvas.width = widestElement;
                     ctx.canvas.height = highestElement;
@@ -337,6 +343,7 @@
 <body style="background-color: darkgray;">
     <div style="width: 100%;text-align: center;">
         <canvas id="pr0Canvas"></canvas><br>
+        <div id="warn"></div>
         <textarea id="imagetext" style="width: 800px;" rows="23">${f.large}&#10;pr0p0st&#10;${f.medium}${c.orange}auf Github ${c.white}yay ${f.small}${c.orange}ooo</textarea><br>
         <input type="checkbox" id="cb-edit-images"> Show image anchors<br>
         <i>Shift+Click to delete image<br>Markers: ${c.orange}, ${c.white}, ${f.large}, ${f.medium}, ${f.small}</i>
