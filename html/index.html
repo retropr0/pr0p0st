@@ -351,8 +351,10 @@
 	            var caretPos = textArea.get(0).selectionStart;
             	var textAreaTxt = textArea.val();
             	textArea.val(textAreaTxt.substring(0, caretPos) + text + textAreaTxt.substring(caretPos));
-            	textArea.get(0).selectionStart = caretPos + text.length;
-            	textArea.focus();
+                textArea.focus();
+            	textArea.get(0).setSelectionRange(caretPos + text.length, caretPos + text.length);
+                content.text = textArea.val();
+                drawContent(content, ctx.canvas.width, ctx.canvas.height);
             }
             
             $('#flarge').click(function() {
@@ -365,10 +367,10 @@
               addTextAtCursor('${f.small}');
             });
             $('#forange').click(function() {
-              addTextAtCursor('${f.orange}');
+              addTextAtCursor('${c.orange}');
             });
             $('#fwhite').click(function() {
-              addTextAtCursor('${f.white}');
+              addTextAtCursor('${c.white}');
             });
             $('#fclear').click(function() {
               textArea.val('');
