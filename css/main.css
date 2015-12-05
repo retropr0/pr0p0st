@@ -1,8 +1,22 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
 body {
-    background-color: #4f4f4f;
+    background-color: #161618;
     text-align: center;
     color: #ee4d2e;
-    font-family: "Courier 10 Pitch"
+    font-family: sans-serif;
+}
+
+h1 {
+  font-family: sans-serif;
+  margin: 1em;
+}
+
+h3 {
+  margin: .75em;
 }
 
 input[type=checkbox], input[type=radio], input[type=range] {
@@ -11,21 +25,30 @@ input[type=checkbox], input[type=radio], input[type=range] {
     bottom: 1px;
 }
 
+#content-output {
+  background-color: #4f4f4f;
+}
+
+#pr0Canvas {
+  margin: 10px;
+}
+
 #content-input {
     display: inline-block;
-
 }
 
 #warn {
+    margin-top: 1em;
     display: none;
     border: 1px solid;
-    margin-bottom: 10px;
     background-color: rgba(238, 77, 46, 0.28);
+    padding: .5em;
 }
 
 #hints fieldset{
     text-align: left;
     border: 1px solid;
+    padding: .3em;
 }
 
 #hints span {
@@ -37,6 +60,7 @@ input[type=checkbox], input[type=radio], input[type=range] {
     border: 1px solid;
     text-align: left;
     margin-top: 10px;
+    padding: .3em;
 }
 
 #settings div {
@@ -48,11 +72,13 @@ input[type=checkbox], input[type=radio], input[type=range] {
 
 #download a {
     color: white;
+    margin: 1em;
 }
 
 #controls {
   background-color: #161618;
 }
+
 .btn {
 	background: #161618 none repeat scroll 0 0;
   border: none;
@@ -61,10 +87,19 @@ input[type=checkbox], input[type=radio], input[type=range] {
 	font-weight: bold;
 	margin: 5px 5px;
 	text-decoration: none;
-	height: 35px;
+	height: 40px;
 	text-align: center;
 }
+
 .btn:hover {
   cursor: pointer;
   color: #ee4d2e;
+}
+
+.btn:focus {
+  outline: none;
+}
+
+#help {
+  cursor: not-allowed;
 }
