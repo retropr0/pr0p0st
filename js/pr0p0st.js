@@ -1,7 +1,5 @@
 $(function() {
-
     var drawContent = function(content, width, height) {
-
         ctx.fillStyle = "#161618";
         ctx.fillRect(0, 0, width, height);
         ctx.font = "bold 20px Arial";
@@ -58,7 +56,6 @@ $(function() {
 
         //Images
         for (var f = 0;f < content.images.length; ++f) {
-
             var img = content.images[f];
             ctx.drawImage(img.img, 0, 0, img.img.width, img.img.height, img.pos.x, img.pos.y, img.size.width, img.size.height);
 
@@ -121,12 +118,14 @@ $(function() {
     });
 
     pr0Canvas.on('dragover', function (e) {
+        var event = e.originalEvent;
         e.preventDefault();
         event.dataTransfer.dropEffect = 'copy';
         return false;
     });
 
     pr0Canvas.on('drop', function (e) {
+        var event = e.originalEvent;
         e.stopPropagation();
         e.preventDefault();
         var file = event.dataTransfer.files[0];
@@ -183,7 +182,6 @@ $(function() {
     }
 
     function handleMouseMove(e){
-
 //                if (!withAnchors) {
 //                    withAnchors = true;
 //                    drawContent(content, ctx.canvas.width, ctx.canvas.height);
@@ -284,11 +282,9 @@ $(function() {
     }
 
     function anchorHitTest(x, y) {
-
         var dx, dy;
 
         for (var i = 0;i < content.images.length; ++i) {
-
             var imageX = content.images[i].pos.x;
             var imageY = content.images[i].pos.y;
             var imageRight = content.images[i].size.width + imageX;
@@ -318,7 +314,6 @@ $(function() {
             if (dx * dx + dy * dy <= 64) {
                 return ({corner: 3, image: i});
             }
-
         }
         return ({corner: -1, image: -1});
     }
@@ -365,5 +360,4 @@ $(function() {
         textArea.val('');
         textArea.focus();
     });
-
 });
