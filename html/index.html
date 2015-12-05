@@ -86,7 +86,7 @@
                 var highestElement = y > lowestImage ? y : lowestImage;
 
                 if (widestElement > 1052) {
-                  $('#warn').html("<p>Warnung: pr0' Content ist 1052px Breit, dieses Bild ist Breiter!</p>")
+                  $('#warn').html("<p>Warnung: pr0' Content ist 1052px Breit, dieses Bild ist "+Math.ceil(widestElement)+"px breit!</p>");
                 } else {
                   $('#warn').html('');
                 }
