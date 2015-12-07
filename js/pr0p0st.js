@@ -379,6 +379,12 @@ $(function() {
     $('.btn-colored-circle.admin').on('click', function() {
         addTextAtCursor('${c.admin}');
     });
+    $('#closeHelp').on('click', function() {
+        $('#modalHelp').hide();
+    });
+    $('#help').on('click', function() {
+        $('#modalHelp').show();
+    });
     $('#fclear').click(function() {
         if (window.confirm("Danach ist alles weg, bist du dir sicher?")) {
             textArea.val('');
