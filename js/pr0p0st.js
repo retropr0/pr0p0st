@@ -167,16 +167,27 @@ $(function() {
         startX = parseInt(e.clientX - bcr.left);
         startY = parseInt(e.clientY - bcr.top);
 
-        if (e.shiftKey) {
-            var img = hitImage(startX, startY);
-            if (img > -1) {
-                content.images.splice(img, 1);
-            }
-        }
+        switch (e.which) {
+            case 1:
+                $("#cb-edit-images").prop("checked", true);
+                withAnchors = true;
+                if (e.shiftKey) {
+                    var img = hitImage(startX, startY);
+                    if (img > -1) {
+                        content.images.splice(img, 1);
+                    }
+                }
 
-        draggingResizer = anchorHitTest(startX, startY);
-        if (draggingResizer.image < 0) {
-            draggingImage = hitImage(startX, startY);
+                draggingResizer = anchorHitTest(startX, startY);
+                if (draggingResizer.image < 0) {
+                    draggingImage = hitImage(startX, startY);
+                }
+                break;
+            case 3:
+                $("#cb-edit-images").prop("checked", false);
+                withAnchors = false;
+                drawContent(content, ctx.canvas.width, ctx.canvas.height);
+                break;
         }
 
     }
