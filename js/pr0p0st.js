@@ -145,6 +145,9 @@ $(function() {
                 img.src = evt.target.result;
                 if (y == -1) {
                     y =  ctx.canvas.height - img.height - 10;
+                    if (y < 10) {
+                        y =  10;
+                    }
                 }
                 content.images.push({img: img, pos: {x: x, y: y}, size: {width: img.width, height: img.height}});
                 drawContent(content, ctx.canvas.width, ctx.canvas.height);
