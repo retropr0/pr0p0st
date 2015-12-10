@@ -96,12 +96,14 @@ input[type=checkbox], input[type=radio], input[type=range] {
 
 #hints span {
     display: block;
+    font-family: "Courier New";
 }
 
 #settings fieldset {
     color: white;
     border: 1px solid;
     text-align: left;
+    font-family: "Courier New";
     margin-top: .4em;
     padding: .3em;
 }
@@ -135,6 +137,10 @@ input[type=checkbox], input[type=radio], input[type=range] {
 
 .btn:focus {
     outline: none;
+}
+
+.orange {
+    color: #ee4d2e;
 }
 
 #colorbuttons {

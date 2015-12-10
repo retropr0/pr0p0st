@@ -45,7 +45,7 @@
         </div>
         <div id="extrabuttons">
             <input type="file" id="file-input" style="display: none;" />
-            <button class="btn" id="btn-image-add">ADD IMAGE</button>
+            <button class="btn orange" id="btn-image-add">ADD IMAGE</button>
             <button class="btn" id="fsmall">small</button>
             <button class="btn" id="fmedium">medium</button>
             <button class="btn" id="flarge">large</button>
@@ -58,8 +58,10 @@
     <div id="hints">
         <fieldset>
             <legend>Hints</legend>
-            <span>Shift+Click to delete image</span>
-            <span>Markers: ${c.orange}, ${c.white}, ${f.large}, ${f.medium}, ${f.small}</span>
+            <span><b>Save image:</b> Right click > Save image as ...</span>
+            <span><b>Add image:</b> Drag&Drop or use the "ADD IMAGE" button</span>
+            <span><b>Delete image:</b> Shift + Click</span>
+
         </fieldset>
     </div>
     <div id="settings">
@@ -69,7 +71,7 @@
             <!--<p><label for="range-image-quality" class="field">Image quality </label><input type="range" min="10" value="100" id="range-image-quality"></p>-->
         </fieldset>
     </div>
-    <div id="download"><h2><a href="#" id="a-download-png">Download PNG</a></h2></div>
+    <!--<div id="download"><h2><a href="#" id="a-download-png">Download PNG</a></h2></div>-->
 </div>
 <script src="../js/pr0p0st.js"></script>
 </body>
