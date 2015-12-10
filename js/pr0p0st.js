@@ -131,19 +131,27 @@ $(function() {
         e.stopPropagation();
         e.preventDefault();
         var file = event.dataTransfer.files[0];
+        bcr = pr0Canvas[0].getBoundingClientRect();
+        mouseX = parseInt(event.clientX - bcr.left);
+        mouseY = parseInt(event.clientY - bcr.top);
+        insertImageOnPosition(file, mouseX, mouseY);
+    });
 
-        if (file.type.match('image.*')) {
+    function insertImageOnPosition(image, x, y) {
+        if (image.type.match('image.*')) {
             var reader = new FileReader();
             reader.onload = function (evt) {
                 var img = new Image;
                 img.src = evt.target.result;
-                content.images.push({img: img, pos: {x: 10, y: 10}, size: {width: img.width, height: img.height}});
+                if (y == -1) {
+                    y =  ctx.canvas.height - img.height - 10;
+                }
+                content.images.push({img: img, pos: {x: x, y: y}, size: {width: img.width, height: img.height}});
                 drawContent(content, ctx.canvas.width, ctx.canvas.height);
             };
-            reader.readAsDataURL(file);
+            reader.readAsDataURL(image);
         }
-
-    });
+    }
 
     pr0Canvas.mousedown(function(e){handleMouseDown(e);});
     pr0Canvas.mousemove(function(e){handleMouseMove(e);});
@@ -159,7 +167,7 @@ $(function() {
         if (e.shiftKey) {
             var img = hitImage(startX, startY);
             if (img > -1) {
-                content.images.splice(img);
+                content.images.splice(img, 1);
             }
         }
 
@@ -342,6 +350,20 @@ $(function() {
         content.text = textArea.val();
         drawContent(content, ctx.canvas.width, ctx.canvas.height);
     }
+
+    $('#btn-image-add').click(function() {
+        var elem = document.getElementById("file-input");
+        if(elem && document.createEvent) {
+            var evt = document.createEvent("MouseEvents");
+            evt.initEvent("click", true, false);
+            elem.dispatchEvent(evt);
+        }
+    });
+
+    $('#file-input').on('change', function(e) {
+        var file = e.target.files[0];
+        insertImageOnPosition(file,  10, -1); // -1 = bottom
+    });
 
     $('#flarge').click(function() {
         addTextAtCursor('${f.large}');
