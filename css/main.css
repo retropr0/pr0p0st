@@ -108,6 +108,20 @@ input[type=checkbox], input[type=radio], input[type=range] {
     padding: .3em;
 }
 
+#edit-zone {
+
+}
+
+#edit-textarea {
+    float:left;
+}
+
+#edit-img-sidebar {
+    float:left;
+    margin-right:-100px;
+    width: 60px;
+}
+
 #download a {
     color: white;
     margin: 1em;

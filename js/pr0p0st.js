@@ -130,11 +130,21 @@ $(function() {
         var event = e.originalEvent;
         e.stopPropagation();
         e.preventDefault();
-        var file = event.dataTransfer.files[0];
         bcr = pr0Canvas[0].getBoundingClientRect();
         mouseX = parseInt(event.clientX - bcr.left);
         mouseY = parseInt(event.clientY - bcr.top);
-        insertImageOnPosition(file, mouseX, mouseY);
+
+        if (event.dataTransfer.files.length > 0) {
+            var file = event.dataTransfer.files[0];
+            insertImageOnPosition(file, mouseX, mouseY);
+        } else if (event.dataTransfer.getData("Text")) {
+            var id = event.dataTransfer.getData("Text");
+            var img = new Image();
+            img.src = id;
+            content.images.push({img: img, pos: {x: mouseX, y: mouseY}, size: {width: 100, height: 100}});
+            drawContent(content, ctx.canvas.width, ctx.canvas.height);
+        }
+
     });
 
     function insertImageOnPosition(image, x, y) {
