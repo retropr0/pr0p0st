@@ -3,7 +3,7 @@ $(function() {
     var drawContent = function(content, width, height) {
         ctx.fillStyle = "#161618";
         ctx.fillRect(0, 0, width, height);
-        ctx.font = "bold 20px Arial";
+        ctx.font = "bold 20px sans-serif";
         ctx.fillStyle = colors["c.white"];
 
 
@@ -97,7 +97,7 @@ $(function() {
     var pr0Canvas = $("#pr0Canvas");
     var bcr = pr0Canvas[0].getBoundingClientRect();
     var colors = {"c.fliese": "#6c432b", "c.banned": "#444444", "c.white": "#ffffff", "c.orange": "#ee4d2e", "c.cyan": "#1cb992", "c.pink": "#e208ea", "c.alt": "#5bb91c", "c.mod": "#008fff", "c.admin": "#ff9900"};
-    var fonts = {"f.small": "bold 14px Arial", "f.medium": "bold 20px Arial", "f.large": "bold 60px Arial"};
+    var fonts = {"f.small": "bold 14px sans-serif", "f.medium": "bold 20px sans-serif", "f.large": "bold 60px sans-serif"};
     var content = {"text": textArea.val(), "images": []};
     var draggingImage = -1;
     var draggingResizer = {corner: -1, image: -1};
