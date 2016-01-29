@@ -89,7 +89,7 @@ $(function() {
         var highestElement = y > lowestImage ? y : lowestImage;
 
         if (widestElement > 1052) {
-            $('#warn').html("<p>Warnung: pr0-Content ist 1052px breit, dieses Bild ist jedoch "+Math.ceil(widestElement)+"px breit!</p>");
+            $('#warn').html("<p>Warning: pr0-Content has a width of 1052px, this Image is "+Math.ceil(widestElement)+"px wide!</p>");
             $('#warn p').attr('unselectable', 'on').css('user-select', 'none').on('selectstart', false);
             $('#warn').css("display", "block");
         } else {
@@ -111,7 +111,8 @@ $(function() {
     var bcr = pr0Canvas[0].getBoundingClientRect();
     var colors = {"c.fliese": "#6c432b", "c.banned": "#444444", "c.white": "#ffffff", "c.orange": "#ee4d2e", "c.cyan": "#1cb992", "c.pink": "#e208ea", "c.alt": "#5bb91c", "c.mod": "#008fff", "c.admin": "#ff9900"};
     var fonts = {"f.small": "bold 14px 'Helvetica Neue', Helvetica, sans-serif", "f.medium": "bold 20px 'Helvetica Neue', Helvetica, sans-serif", "f.large": "bold 60px 'Helvetica Neue', Helvetica, sans-serif"};
-    var content = {"text": textArea.val(), "images": []};
+    var content = {"text": localStorage["imagetext"] || textArea.val(), "images": []};
+    textArea.val(content.text);
     var draggingImage = -1;
     var draggingResizer = {corner: -1, image: -1};
     var startX = 0;
@@ -124,6 +125,7 @@ $(function() {
 
     textArea.on("keyup", function(){
         content.text = $(this).val();
+        localStorage["imagetext"] = content.text;
         drawContent(content, ctx.canvas.width, ctx.canvas.height);
     });
 
@@ -395,6 +397,22 @@ $(function() {
             evt.initEvent("click", true, false);
             elem.dispatchEvent(evt);
         }
+    });
+
+    var downloadLink = document.createElement("a");
+    document.body.appendChild(downloadLink);
+    downloadLink.style = "display: none";
+    $('#btn-image-download').click(function() {
+        var _withAnchors = withAnchors;
+        withAnchors = false;
+        drawContent(content, ctx.canvas.width, ctx.canvas.height);
+
+        downloadLink.href = pr0Canvas[0].toDataURL();
+        downloadLink.download = "pr0p0st.png";
+        downloadLink.click();
+
+        withAnchors = _withAnchors;
+        drawContent(content, ctx.canvas.width, ctx.canvas.height);
     });
 
     $('#file-input').on('change', function(e) {
