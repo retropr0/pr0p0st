@@ -403,9 +403,16 @@ $(function() {
 	document.body.appendChild(downloadLink);
 	downloadLink.style = "display: none";
 	$('#btn-image-download').click(function() {
+		var _withAnchors = withAnchors;
+		withAnchors = false;
+		drawContent(content, ctx.canvas.width, ctx.canvas.height);
+
 		downloadLink.href = pr0Canvas[0].toDataURL();
 		downloadLink.download = "pr0p0st.png";
 		downloadLink.click();
+
+		withAnchors = _withAnchors;
+		drawContent(content, ctx.canvas.width, ctx.canvas.height);
 	});
 
     $('#file-input').on('change', function(e) {
