@@ -24,13 +24,16 @@ $(function() {
             //var lineHeight = ctx.measureText("M").width * 1.5;
             var colorPositions = {};
             var fontPositions = new Array();
+            var fontType = new Array();
             var markerRe = /\${(.*?)}/;
 
             while ((match = markerRe.exec(lines[i])) != null) {
                 if (match[1].substring(0,2) === "c.") {
                     colorPositions[match.index] = match[1];
-                } else if((match[1].substring(0,2) === "f.")) {
+                } else if((match[1].substring(0,3) === "fs.")) {
                     fontPositions[match.index] = match[1];
+                } else if((match[1].substring(0,3) === "ft.")) {
+                    fontType[match.index] = match[1];
                 }
                 lines[i] = lines[i].replace(markerRe, "");
             }
@@ -41,14 +44,17 @@ $(function() {
                 if (c in colorPositions) {
                     ctx.fillStyle = colors[colorPositions[c]];
                 }
+                if(c in fontType) {
+                    ctx.font = fontbuilder(true, fonttypes[fontType[c]], fontsizes[fontPositions[c]]);
+                }
                 if (c in fontPositions) {
-                    ctx.font = fonts[fontPositions[c]];
-                    if (fontPositions[c] == "f.large") {
+                    ctx.font = fontbuilder(true, fonttypes[fontType[c]], fontsizes[fontPositions[c]]);
+                    if (fontPositions[c] == "fs.large") {
                         lineHeight = 65;
                         if (i == 0) { y += 20}
-                    } else if (fontPositions[c] == "f.medium") {
+                    } else if (fontPositions[c] == "fs.medium") {
                         lineHeight = 25;
-                    } else if (fontPositions[c] == "f.small") {
+                    } else if (fontPositions[c] == "fs.small") {
                         lineHeight = 18;
                     }
 
@@ -110,7 +116,8 @@ $(function() {
     var pr0Canvas = $("#pr0Canvas");
     var bcr = pr0Canvas[0].getBoundingClientRect();
     var colors = {"c.fliese": "#6c432b", "c.banned": "#444444", "c.white": "#ffffff", "c.orange": "#ee4d2e", "c.cyan": "#1cb992", "c.pink": "#e208ea", "c.alt": "#5bb91c", "c.mod": "#008fff", "c.admin": "#ff9900"};
-    var fonts = {"f.small": "bold 14px 'Helvetica Neue', Helvetica, sans-serif", "f.medium": "bold 20px 'Helvetica Neue', Helvetica, sans-serif", "f.large": "bold 60px 'Helvetica Neue', Helvetica, sans-serif"};
+    var fontsizes = {"fs.small": "14px", "fs.medium": "20px", "fs.large": "60px"};
+    var fonttypes = {"ft.normal" : "'Helvetica Neue', Helvetica, sans-serif", "ft.roboto": "'Roboto' Roboto, sans-serif"}
     var content = {"text": textArea.val(), "images": []};
     var draggingImage = -1;
     var draggingResizer = {corner: -1, image: -1};
@@ -219,6 +226,13 @@ $(function() {
         draggingImage = -1;
         draggingResizer = -1;
         drawContent(content, ctx.canvas.width, ctx.canvas.height);
+    }
+
+    function fontbuilder(boldon, font, size){
+        if(boldon){
+            bold = "bold ";
+        }
+        return bold + size + " " + font;
     }
 
     function handleMouseOut(e){
@@ -387,6 +401,7 @@ $(function() {
         content.text = textArea.val();
         drawContent(content, ctx.canvas.width, ctx.canvas.height);
     }
+    //console.log(fontbuilder(true, "'Roboto' Roboto, sans-serif", "fs.medium"));
 
     $('#btn-image-add').click(function() {
         var elem = document.getElementById("file-input");
@@ -401,15 +416,25 @@ $(function() {
         var file = e.target.files[0];
         insertImageOnPosition(file,  10, -1); // -1 = bottom
     });
-
-    $('#flarge').click(function() {
-        addTextAtCursor('${f.large}');
+    $('#fontpicker').change(function() {
+        var item = document.getElementById("fontpicker");
+        want = item.options[item.selectedIndex].value;
+        if(want == "Roboto"){
+            addTextAtCursor('${ft.roboto}');
+        }else if(want == "Normal"){
+            addTextAtCursor('${ft.normal}');
+        }
+        
     });
+    $('#flarge').click(function() {
+        addTextAtCursor('${fs.large}');
+    });
+
     $('#fmedium').click(function() {
-        addTextAtCursor('${f.medium}');
+        addTextAtCursor('${fs.medium}');
     });
     $('#fsmall').click(function() {
-        addTextAtCursor('${f.small}');
+        addTextAtCursor('${fs.small}');
     });
     $('.btn-colored-circle.fliese').on('click', function() {
         addTextAtCursor('${c.fliese}');
