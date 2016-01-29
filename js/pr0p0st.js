@@ -111,7 +111,8 @@ $(function() {
     var bcr = pr0Canvas[0].getBoundingClientRect();
     var colors = {"c.fliese": "#6c432b", "c.banned": "#444444", "c.white": "#ffffff", "c.orange": "#ee4d2e", "c.cyan": "#1cb992", "c.pink": "#e208ea", "c.alt": "#5bb91c", "c.mod": "#008fff", "c.admin": "#ff9900"};
     var fonts = {"f.small": "bold 14px 'Helvetica Neue', Helvetica, sans-serif", "f.medium": "bold 20px 'Helvetica Neue', Helvetica, sans-serif", "f.large": "bold 60px 'Helvetica Neue', Helvetica, sans-serif"};
-    var content = {"text": textArea.val(), "images": []};
+	var content = {"text": localStorage["imagetext"] || textArea.val(), "images": []};
+	textArea.val(content.text);
     var draggingImage = -1;
     var draggingResizer = {corner: -1, image: -1};
     var startX = 0;
@@ -124,6 +125,7 @@ $(function() {
 
     textArea.on("keyup", function(){
         content.text = $(this).val();
+		localStorage["imagetext"] = content.text;
         drawContent(content, ctx.canvas.width, ctx.canvas.height);
     });
 
