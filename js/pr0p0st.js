@@ -44,12 +44,12 @@ $(function() {
                 if (c in fontPositions) {
                     ctx.font = fonts[fontPositions[c]];
                     if (fontPositions[c] == "f.large") {
-                        lineHeight = 60;
+                        lineHeight = 65;
                         if (i == 0) { y += 20}
                     } else if (fontPositions[c] == "f.medium") {
-                        lineHeight = 20;
+                        lineHeight = 25;
                     } else if (fontPositions[c] == "f.small") {
-                        lineHeight = 14;
+                        lineHeight = 18;
                     }
 
                 }
