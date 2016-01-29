@@ -44,6 +44,13 @@ body {
   cursor: pointer;
 }
 
+h1.header-title {
+    font-family: sans-serif;
+    margin: .5em;
+    font-size: 34px;
+    font-family: FreeMono;
+}
+
 h1 {
     font-family: sans-serif;
     margin: 1em;

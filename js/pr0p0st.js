@@ -4,11 +4,12 @@ $(function() {
         ctx.fillStyle = "#161618";
         ctx.fillRect(0, 0, width, height);
         ctx.font = "bold 20px sans-serif";
+        //ctx.textBaseline = "bottom";
         ctx.fillStyle = colors["c.white"];
 
 
         var lines = content.text.split("\n");
-        var xPadding = 30;
+        var xPadding = 15;
         var yPadding = 30;
 
         var x = xPadding;
@@ -20,9 +21,9 @@ $(function() {
 
         for (var i = 0; i < lines.length; ++i) {
             x = 10;
-            var lineHeight = ctx.measureText("M").width * 1.5;
+            //var lineHeight = ctx.measureText("M").width * 1.5;
             var colorPositions = {};
-            var fontPositions = {};
+            var fontPositions = new Array();
             var markerRe = /\${(.*?)}/;
 
             while ((match = markerRe.exec(lines[i])) != null) {
@@ -34,6 +35,7 @@ $(function() {
                 lines[i] = lines[i].replace(markerRe, "");
             }
 
+
             for (var c = 0; c <= lines[i].length; ++c) {
                 var chr = lines[i].charAt(c);
                 if (c in colorPositions) {
@@ -41,17 +43,28 @@ $(function() {
                 }
                 if (c in fontPositions) {
                     ctx.font = fonts[fontPositions[c]];
+                    if (fontPositions[c] == "f.large") {
+                        lineHeight = 60;
+                        if (i == 0) { y += 20}
+                    } else if (fontPositions[c] == "f.medium") {
+                        lineHeight = 20;
+                    } else if (fontPositions[c] == "f.small") {
+                        lineHeight = 14;
+                    }
+
                 }
+
                 ctx.fillText(chr, x, y);
-                if (lineHeight < ctx.measureText("M").width * 1.5) {
-                    lineHeight = ctx.measureText("M").width * 1.5;
-                }
                 x += ctx.measureText(chr).width;
             }
 
-            y += lineHeight;
 
-            widestLine = ctx.measureText(lines[i]).width + xPadding > widestLine ? ctx.measureText(lines[i]).width + xPadding : widestLine;
+            y += lineHeight;//tallestLineHeight;
+
+            if ((x + xPadding) > widestLine) {
+                widestLine = x + xPadding;
+            }
+            //widestLine = ctx.measureText(lines[i]).width + xPadding > widestLine ? ctx.measureText(lines[i]).width + xPadding : widestLine;
 
         }
 
@@ -76,7 +89,7 @@ $(function() {
         var highestElement = y > lowestImage ? y : lowestImage;
 
         if (widestElement > 1052) {
-            $('#warn').html("<p>Warnung: pr0' Content ist 1052px Breit, dieses Bild ist "+Math.ceil(widestElement)+"px breit!</p>");
+            $('#warn').html("<p>Warnung: pr0-Content ist 1052px breit, dieses Bild ist jedoch "+Math.ceil(widestElement)+"px breit!</p>");
             $('#warn p').attr('unselectable', 'on').css('user-select', 'none').on('selectstart', false);
             $('#warn').css("display", "block");
         } else {
