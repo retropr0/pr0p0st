@@ -5,6 +5,12 @@
     <title>pr0p0st</title>
     <script type="text/javascript" src="../js/jquery-2.1.4.min.js"></script>
     <link rel="stylesheet" href="../css/main.css">
+
+
+    <!-- FONTS -->
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
+
+
 </head>
 <body>
   <!-- Modal Start TODO: Schöner machen? -->
@@ -46,6 +52,10 @@
         <div id="extrabuttons">
             <input type="file" id="file-input" style="display: none;" />
             <button class="btn orange" id="btn-image-add">ADD IMAGE</button>
+              <select id="fontpicker">
+                <option>Normal</option>
+                <option>Roboto</option>
+               </select>
             <button class="btn" id="fsmall">small</button>
             <button class="btn" id="fmedium">medium</button>
             <button class="btn" id="flarge">large</button>
@@ -55,7 +65,7 @@
     </div>
     <div id="edit-zone">
         <div id="edit-textarea">
-            <textarea id="imagetext" style="width: 800px;" rows="23">${f.large}pr0p0st&#10;${f.medium}${c.orange}Hier bitte guten OC einfügen ${c.white}${f.small}...</textarea>
+            <textarea id="imagetext" style="width: 800px;" rows="23">${ft.roboto}${fs.large}pr0p0st&#10;${fs.medium}${c.orange}Hier bitte guten OC einfügen ${c.white}${fs.small}...</textarea>
         </div>
         <div id="edit-img-sidebar">
             <img src="../images/db.png" style="float: right;" draggable="true" width="50" title="Drag Me">
