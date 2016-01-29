@@ -89,7 +89,7 @@ $(function() {
         var highestElement = y > lowestImage ? y : lowestImage;
 
         if (widestElement > 1052) {
-            $('#warn').html("<p>Warnung: pr0-Content ist 1052px breit, dieses Bild ist jedoch "+Math.ceil(widestElement)+"px breit!</p>");
+            $('#warn').html("<p>Warning: pr0-Content has a width of 1052px, this Image is "+Math.ceil(widestElement)+"px wide!</p>");
             $('#warn p').attr('unselectable', 'on').css('user-select', 'none').on('selectstart', false);
             $('#warn').css("display", "block");
         } else {
