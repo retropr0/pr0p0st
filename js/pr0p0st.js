@@ -397,6 +397,15 @@ $(function() {
         }
     });
 
+	var downloadLink = document.createElement("a");
+	document.body.appendChild(downloadLink);
+	downloadLink.style = "display: none";
+	$('#btn-image-download').click(function() {
+		downloadLink.href = pr0Canvas[0].toDataURL();
+		downloadLink.download = "pr0p0st.png";
+		downloadLink.click();
+	});
+
     $('#file-input').on('change', function(e) {
         var file = e.target.files[0];
         insertImageOnPosition(file,  10, -1); // -1 = bottom
