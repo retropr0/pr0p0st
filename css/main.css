@@ -6,7 +6,7 @@
 body {
     background-color: #161618;
     text-align: center;
-    color: #ee4d2e;
+    color: #f2f5f4;
     font-family: sans-serif;
     font-size: 16px;
 }
@@ -35,12 +35,18 @@ body {
   margin: .5em;
 }
 
+#modalHelp a {
+  color: #ee4d2e;
+  text-decoration: none;
+}
+
 #closeHelp {
   display: inline;
   float: right;
 }
 
 #closeHelp:hover {
+  color: #ee4d2e;
   cursor: pointer;
 }
 
@@ -48,7 +54,6 @@ h1.header-title {
     font-family: sans-serif;
     margin: .5em;
     font-size: 34px;
-    font-family: FreeMono;
 }
 
 h1 {
@@ -66,6 +71,15 @@ input[type=checkbox], input[type=radio], input[type=range] {
     vertical-align: middle;
     position: relative;
     bottom: 1px;
+}
+
+fieldset legend {
+  color: #ee4d2e;
+  padding: 0 .5em;
+}
+
+p {
+  line-height: 1.3;
 }
 
 #content-output {
@@ -97,22 +111,23 @@ input[type=checkbox], input[type=radio], input[type=range] {
 #hints fieldset {
     text-align: left;
     border: 1px solid;
-    padding: .3em;
+    padding: .5em;
     margin-top: .4em;
 }
 
 #hints span {
     display: block;
-    font-family: "Courier New";
+}
+
+#hints b {
+
 }
 
 #settings fieldset {
-    color: white;
     border: 1px solid;
     text-align: left;
-    font-family: "Courier New";
     margin-top: .4em;
-    padding: .3em;
+    padding: .5em;
 }
 
 #edit-zone {
@@ -129,6 +144,10 @@ input[type=checkbox], input[type=radio], input[type=range] {
     width: 60px;
 }
 
+#edit-img-sidebar img:hover {
+  cursor: pointer;
+}
+
 #download a {
     color: white;
     margin: 1em;
@@ -142,8 +161,7 @@ input[type=checkbox], input[type=radio], input[type=range] {
 .btn {
     background: #161618 none repeat scroll 0 0;
     border: none;
-    color: #aaa;
-    font-family: Arial;
+    color: #f2f5f4;
     font-weight: bold;
     margin: 5px 5px;
     text-decoration: none;
