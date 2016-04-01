@@ -439,10 +439,10 @@ $(function() {
         addTextAtCursor('${c.admin}');
     });
     $('#closeHelp').on('click', function() {
-        $('#modalHelp').hide();
+        $('#modalHelp').fadeOut("fast");
     });
     $('#help').on('click', function() {
-        $('#modalHelp').show();
+        $('#modalHelp').fadeIn("fast");
     });
     $('#fclear').click(function() {
         if (window.confirm("Danach ist alles weg, bist du dir sicher?")) {
