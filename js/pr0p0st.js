@@ -10,7 +10,7 @@ $(function() {
 
         var lines = content.text.split("\n");
         var xPadding = 15;
-        var yPadding = 30;
+        var yPadding = 15;
 
         var x = xPadding;
         var y = yPadding;
@@ -21,10 +21,26 @@ $(function() {
 
         for (var i = 0; i < lines.length; ++i) {
             x = 10;
-            //var lineHeight = ctx.measureText("M").width * 1.5;
             var colorPositions = {};
             var fontPositions = new Array();
             var markerRe = /\${(.*?)}/;
+
+            var lh = 0, // line height
+                offset = 0; // offset after line
+            if(lines[i].search("f.large")>0) {
+                lh = 45;
+                offset = 15
+            } else if (lines[i].search("f.medium")>0) {
+                lh = 20;
+                offset = 5;
+            } else if (lines[i].search("f.small")>0) {
+                lh = 15;
+                offset = 3;
+            } else {
+                lh = 20;
+                offset = 5;
+            }
+            y += lh;
 
             while ((match = markerRe.exec(lines[i])) != null) {
                 if (match[1].substring(0,2) === "c.") {
@@ -37,6 +53,7 @@ $(function() {
 
 
             for (var c = 0; c <= lines[i].length; ++c) {
+                // console.log(c);
                 var chr = lines[i].charAt(c);
                 if (c in colorPositions) {
                     ctx.fillStyle = colors[colorPositions[c]];
@@ -45,7 +62,6 @@ $(function() {
                     ctx.font = fonts[fontPositions[c]];
                     if (fontPositions[c] == "f.large") {
                         lineHeight = 65;
-                        if (i == 0) { y += 20}
                     } else if (fontPositions[c] == "f.medium") {
                         lineHeight = 25;
                     } else if (fontPositions[c] == "f.small") {
@@ -58,8 +74,7 @@ $(function() {
                 x += ctx.measureText(chr).width;
             }
 
-
-            y += lineHeight;//tallestLineHeight;
+            y += offset;
 
             if ((x + xPadding) > widestLine) {
                 widestLine = x + xPadding;
@@ -67,6 +82,8 @@ $(function() {
             //widestLine = ctx.measureText(lines[i]).width + xPadding > widestLine ? ctx.measureText(lines[i]).width + xPadding : widestLine;
 
         }
+
+        y += yPadding; // spacing bottom
 
         //Images
         for (var f = 0;f < content.images.length; ++f) {
