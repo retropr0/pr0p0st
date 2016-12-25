@@ -48,12 +48,12 @@
         </div>
         <div id="extrabuttons">
             <input type="file" id="file-input" style="display: none;" />
-            <button class="btn orange" id="btn-image-add">ADD IMAGE</button>
-            <button class="btn" id="fsmall">small</button>
-            <button class="btn" id="fmedium">medium</button>
-            <button class="btn" id="flarge">large</button>
-            <button class="btn" id="fclear">Clear All!</button>
-            <button class="btn" id="help">Help!</button> <!-- TODO: add functionality (Modales Fenster oder so) -->
+            <button class="btn" id="fsmall">klein</button>
+            <button class="btn" id="fmedium">normal</button>
+            <button class="btn" id="flarge">groß</button>
+            <button class="btn orange" id="btn-image-add">Bild hinzufügen</button>
+            <button class="btn red" id="fclear">Alles löschen!</button>
+            <button class="btn grey" id="help">Hilfe</button> <!-- TODO: add functionality (Modales Fenster oder so) -->
         </div>
     </div>
 
@@ -68,7 +68,7 @@
 
     <div id="size">
         <fieldset>
-            <legend>Size</legend>
+            <legend>Bildgröße</legend>
             <p>
                 <div id="div-image-info-size">
                     <div id="div-image-info-size-free">
@@ -91,19 +91,19 @@
 
     <div id="hints">
         <fieldset>
-            <legend>Hints</legend>
-            <span><p><b>Add image:</b> Drag & Drop (i.e. from Sidebar on right side) or use the "ADD IMAGE" button</p></span>
-            <span><p><b>Delete image:</b> Shift + Click</p></span>
+            <legend>Hinweise</legend>
+            <span><p><b>Bild hinzufügen:</b> Drag & Drop oder "Bild hinzufügen" klicken</p></span>
+            <span><p><b>Bild löschen:</b> Shift + Klick</p></span>
         </fieldset>
     </div>
     <div id="settings">
         <fieldset>
-            <legend>Settings</legend>
-            <p><label for="cb-edit-images" class="field">Image anchors </label><input type="checkbox" checked id="cb-edit-images"></p>
+            <legend>Einstellungen</legend>
+            <p><label for="cb-edit-images" class="field">Verschiebepunkte in Bildecken anzeigen </label><input type="checkbox" checked id="cb-edit-images"></p>
             <!--<p><label for="range-image-quality" class="field">Image quality </label><input type="range" min="10" value="100" id="range-image-quality"></p>-->
         </fieldset>
     </div>
-    <div id="download"><h2><a href="#" id="a-download-png">Download PNG</a></h2></div>
+    <div id="download"><h2><a href="#" id="a-download-png">Bild speichern</a></h2></div>
 </div>
 <script src="../js/pr0p0st.js"></script>
 </body>

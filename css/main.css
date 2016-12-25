@@ -262,6 +262,14 @@ p {
     color: #ee4d2e;
 }
 
+.red {
+    color: #c10004;
+}
+
+.grey {
+    color: grey;
+}
+
 #colorbuttons {
     padding-top: 8px;
     float: left;
