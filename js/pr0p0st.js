@@ -53,7 +53,6 @@ $(function() {
 
 
             for (var c = 0; c <= lines[i].length; ++c) {
-                // console.log(c);
                 var chr = lines[i].charAt(c);
                 if (c in colorPositions) {
                     ctx.fillStyle = colors[colorPositions[c]];
@@ -79,7 +78,6 @@ $(function() {
             if ((x + xPadding) > widestLine) {
                 widestLine = x + xPadding;
             }
-            //widestLine = ctx.measureText(lines[i]).width + xPadding > widestLine ? ctx.measureText(lines[i]).width + xPadding : widestLine;
 
         }
 
@@ -178,7 +176,6 @@ $(function() {
             content.images.push({img: img, pos: {x: mouseX, y: mouseY}, size: {width: 100, height: 100}});
             drawContent(content, ctx.canvas.width, ctx.canvas.height);
         }
-        refreshCanvasDownloadSizeLabel();
 
     });
 
@@ -242,21 +239,16 @@ $(function() {
         draggingImage = -1;
         draggingResizer = -1;
         drawContent(content, ctx.canvas.width, ctx.canvas.height);
-        // refreshCanvasDownloadSizeLabel();
+        refreshCanvasDownloadSizeLabel();
     }
 
     function handleMouseOut(e){
         draggingImage = -1;
         draggingResizer = -1;
-//                withAnchors = false;
         drawContent(content, ctx.canvas.width, ctx.canvas.height);
     }
 
     function handleMouseMove(e){
-//                if (!withAnchors) {
-//                    withAnchors = true;
-//                    drawContent(content, ctx.canvas.width, ctx.canvas.height);
-//                }
 
         if (draggingResizer.image > -1) {
             bcr = pr0Canvas[0].getBoundingClientRect();
