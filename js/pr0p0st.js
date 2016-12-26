@@ -5,7 +5,7 @@ $(function() {
         ctx.fillRect(0, 0, width, height);
         ctx.font = "bold 20px 'Helvetica Neue', Helvetica, sans-serif";
         //ctx.textBaseline = "bottom";
-        ctx.fillStyle = colors["c.white"];
+        ctx.fillStyle = colors["c.schwuchtel"];
 
 
         var lines = content.text.split("\n");
@@ -27,13 +27,13 @@ $(function() {
 
             var lh = 0, // line height
                 offset = 0; // offset after line
-            if(lines[i].search("f.large")>0) {
+            if(lines[i].search("f.gross")>0) {
                 lh = 45;
                 offset = 15
-            } else if (lines[i].search("f.medium")>0) {
+            } else if (lines[i].search("f.normal")>0) {
                 lh = 20;
                 offset = 5;
-            } else if (lines[i].search("f.small")>0) {
+            } else if (lines[i].search("f.klein")>0) {
                 lh = 15;
                 offset = 3;
             } else {
@@ -59,11 +59,11 @@ $(function() {
                 }
                 if (c in fontPositions) {
                     ctx.font = fonts[fontPositions[c]];
-                    if (fontPositions[c] == "f.large") {
+                    if (fontPositions[c] == "f.gross") {
                         lineHeight = 65;
-                    } else if (fontPositions[c] == "f.medium") {
+                    } else if (fontPositions[c] == "f.normal") {
                         lineHeight = 25;
-                    } else if (fontPositions[c] == "f.small") {
+                    } else if (fontPositions[c] == "f.klein") {
                         lineHeight = 18;
                     }
 
@@ -124,8 +124,8 @@ $(function() {
     var textArea = $("#imagetext");
     var pr0Canvas = $("#pr0Canvas");
     var bcr = pr0Canvas[0].getBoundingClientRect();
-    var colors = {"c.fliese": "#6c432b", "c.banned": "#444444", "c.white": "#ffffff", "c.orange": "#ee4d2e", "c.cyan": "#1cb992", "c.pink": "#e208ea", "c.alt": "#5bb91c", "c.mod": "#008fff", "c.admin": "#ff9900"};
-    var fonts = {"f.small": "bold 14px 'Helvetica Neue', Helvetica, sans-serif", "f.medium": "bold 20px 'Helvetica Neue', Helvetica, sans-serif", "f.large": "bold 60px 'Helvetica Neue', Helvetica, sans-serif"};
+    var colors = {"c.fliese": "#6c432b", "c.banned": "#444444", "c.schwuchtel": "#ffffff", "c.orange": "#ee4d2e", "c.pr0mium": "#1cb992", "c.neu": "#e208ea", "c.alt": "#5bb91c", "c.mod": "#008fff", "c.admin": "#ff9900"};
+    var fonts = {"f.klein": "bold 14px 'Helvetica Neue', Helvetica, sans-serif", "f.normal": "bold 20px 'Helvetica Neue', Helvetica, sans-serif", "f.gross": "bold 60px 'Helvetica Neue', Helvetica, sans-serif"};
     var content = {"text": textArea.val(), "images": []};
     var draggingImage = -1;
     var draggingResizer = {corner: -1, image: -1};
@@ -439,13 +439,13 @@ $(function() {
     });
 
     $('#flarge').click(function() {
-        addTextAtCursor('${f.large}');
+        addTextAtCursor('${f.gross}');
     });
     $('#fmedium').click(function() {
-        addTextAtCursor('${f.medium}');
+        addTextAtCursor('${f.normal}');
     });
     $('#fsmall').click(function() {
-        addTextAtCursor('${f.small}');
+        addTextAtCursor('${f.klein}');
     });
     $('.btn-colored-circle.fliese').on('click', function() {
         addTextAtCursor('${c.fliese}');
@@ -457,13 +457,13 @@ $(function() {
         addTextAtCursor('${c.orange}');
     });
     $('.btn-colored-circle.schwuchtel').on('click', function() {
-        addTextAtCursor('${c.white}');
+        addTextAtCursor('${c.schwuchtel}');
     });
     $('.btn-colored-circle.neuschwuchtel').on('click', function() {
-        addTextAtCursor('${c.pink}');
+        addTextAtCursor('${c.neu}');
     });
     $('.btn-colored-circle.pr0mium').on('click', function() {
-        addTextAtCursor('${c.cyan}');
+        addTextAtCursor('${c.pr0mium}');
     });
     $('.btn-colored-circle.altschwuchtel').on('click', function() {
         addTextAtCursor('${c.alt}');
