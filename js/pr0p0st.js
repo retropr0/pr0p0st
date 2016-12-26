@@ -151,6 +151,10 @@ $(function() {
         drawContent(content, ctx.canvas.width, ctx.canvas.height);
     });
 
+    $("#a-refresh-size").on("click", function () {
+        refreshCanvasDownloadSizeLabel();
+    });
+
     pr0Canvas.on('dragover', function (e) {
         var event = e.originalEvent;
         e.preventDefault();
@@ -176,6 +180,8 @@ $(function() {
             content.images.push({img: img, pos: {x: mouseX, y: mouseY}, size: {width: 100, height: 100}});
             drawContent(content, ctx.canvas.width, ctx.canvas.height);
         }
+
+        refreshCanvasDownloadSizeLabel();
 
     });
 
@@ -239,7 +245,7 @@ $(function() {
         draggingImage = -1;
         draggingResizer = -1;
         drawContent(content, ctx.canvas.width, ctx.canvas.height);
-        refreshCanvasDownloadSizeLabel();
+        // refreshCanvasDownloadSizeLabel();
     }
 
     function handleMouseOut(e){
