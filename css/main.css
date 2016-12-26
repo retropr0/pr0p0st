@@ -108,7 +108,7 @@ p {
     float: left;
     height: 20px;
     width: 50%;
-    border-bottom: 2px solid #126049;
+    border-bottom: 2px solid #00630c;
 }
 
 #span-image-info-size-free-max {
@@ -125,7 +125,7 @@ p {
     height: 20px;
     width: 50%;
     text-align: center;
-    border-bottom: 2px solid #91863b;
+    border-bottom: 2px solid #1cb992;
 }
 
 #span-image-info-size-pr0mium-max {
@@ -171,6 +171,8 @@ p {
 }
 
 #imagetext {
+    width: 800px;
+    height: 23em;
     padding: 5px;
     background-color: #1B1E1F;
     color: #bbb;
@@ -219,7 +221,7 @@ p {
 }
 
 #edit-img-sidebar {
-    float:left;
+    float: left;
     margin-right:-100px;
     width: 60px;
 }
