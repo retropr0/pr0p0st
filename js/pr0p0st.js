@@ -132,6 +132,7 @@ $(function() {
     var startX = 0;
     var startY = 0;
     var withAnchors = true;
+    var keepAspectRatio = true;
 
     var ctx = pr0Canvas[0].getContext('2d');
 
@@ -149,6 +150,9 @@ $(function() {
     $("#cb-edit-images").on("change",function() {
         withAnchors = !!$(this).is(":checked");
         drawContent(content, ctx.canvas.width, ctx.canvas.height);
+    });
+    $("#cb-keep-image-aspect").on("change",function() {
+        keepAspectRatio = !!$(this).is(":checked");
     });
 
     $("#a-refresh-size").on("click", function () {
@@ -261,48 +265,59 @@ $(function() {
             mouseX = parseInt(e.clientX - bcr.left);
             mouseY = parseInt(e.clientY - bcr.top);
 
-            var imageX = content.images[draggingResizer.image].pos.x;
-            var imageY = content.images[draggingResizer.image].pos.y;
-            var imageWidth = content.images[draggingResizer.image].img.width;
-            var imageHeight = content.images[draggingResizer.image].img.height;
-            var imageRight = content.images[draggingResizer.image].size.width + imageX;
-            var imageBottom = content.images[draggingResizer.image].size.height + imageY;
+            var image = content.images[draggingResizer.image];
+            var left = image.pos.x;
+            var top = image.pos.y;
+            var right = image.size.width + left;
+            var bottom = image.size.height + top;
+            var width = image.img.width;
+            var height = image.img.height;
+            var aspect = width / height;
 
             // resize the image
             switch (draggingResizer.corner) {
                 case 0:
                     //top-left
-                    imageX = mouseX;
-                    imageWidth = imageRight - mouseX;
-                    imageY = mouseY;
-                    imageHeight = imageBottom - mouseY;
+                    left = mouseX;
+                    width = right - mouseX;
+                    top = mouseY;
+                    height = bottom - mouseY;
                     break;
                 case 1:
                     //top-right
-                    imageY = mouseY;
-                    imageWidth = mouseX - imageX;
-                    imageHeight = imageBottom - mouseY;
+                    top = mouseY;
+                    width = mouseX - left;
+                    height = bottom - mouseY;
                     break;
                 case 2:
                     //bottom-right
-                    imageWidth = mouseX - imageX;
-                    imageHeight = mouseY - imageY;
+                    width = mouseX - left;
+                    height = mouseY - top;
                     break;
                 case 3:
                     //bottom-left
-                    imageX = mouseX;
-                    imageWidth = imageRight - mouseX;
-                    imageHeight = mouseY - imageY;
+                    left = mouseX;
+                    width = right - mouseX;
+                    height = mouseY - top;
                     break;
             }
 
-            if(imageWidth < 25) {imageWidth = 25;}
-            if(imageHeight < 25) {imageHeight = 25;}
+            // keep aspect ratio fixed
+            if (keepAspectRatio) {
+                height = width * aspect;
+                // keep bottom fixed when dragging one of the top anchors
+                if (draggingResizer.corner < 2) top = bottom - height;
+            }
 
-            content.images[draggingResizer.image].pos.x = imageX;
-            content.images[draggingResizer.image].pos.y = imageY;
-            content.images[draggingResizer.image].size.width = imageWidth;
-            content.images[draggingResizer.image].size.height = imageHeight;
+            // prevent size smaller than 25
+            if (width >= 25) {
+                image.pos.x = left;
+                image.size.width = width;
+            }
+            if (height >= 25) {
+                image.pos.y = top;
+                image.size.height = height;
+            }
 
             drawContent(content, ctx.canvas.width, ctx.canvas.height);
 
@@ -316,8 +331,6 @@ $(function() {
             var dy = mouseY - startY;
             content.images[draggingImage].pos.x += dx;
             content.images[draggingImage].pos.y += dy;
-            imageRight += dx;
-            imageBottom += dy;
             // reset the startXY for next time
             startX = mouseX;
             startY = mouseY;
