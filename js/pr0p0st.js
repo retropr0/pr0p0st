@@ -22,7 +22,7 @@ $(function() {
         for (var i = 0; i < lines.length; ++i) {
             x = 10;
             var colorPositions = {};
-            var fontPositions = new Array();
+            var fontPositions = [];
             var markerRe = /\${(.*?)}/;
 
             var lh = 0, // line height
@@ -193,16 +193,19 @@ $(function() {
         if (image.type.match('image.*')) {
             var reader = new FileReader();
             reader.onload = function (evt) {
-                var img = new Image;
+                var img = new Image();
                 img.src = evt.target.result;
-                if (y == -1) {
-                    y =  ctx.canvas.height - img.height - 10;
-                    if (y < 10) {
-                        y =  10;
+                img.onload = function() {
+                    if (y == -1) {
+                        y =  ctx.canvas.height - img.height - 10;
+                        if (y < 10) {
+                            y =  10;
+                        }
                     }
-                }
-                content.images.push({img: img, pos: {x: x, y: y}, size: {width: img.width, height: img.height}});
-                drawContent(content, ctx.canvas.width, ctx.canvas.height);
+
+                    content.images.push({img: img, pos: {x: x, y: y}, size: {width: img.width, height: img.height}});
+                    drawContent(content, ctx.canvas.width, ctx.canvas.height);
+                };
             };
             reader.readAsDataURL(image);
             refreshCanvasDownloadSizeLabel();
@@ -304,9 +307,11 @@ $(function() {
 
             // keep aspect ratio fixed
             if (keepAspectRatio) {
-                height = width * aspect;
+                width = height * aspect;
                 // keep bottom fixed when dragging one of the top anchors
-                if (draggingResizer.corner < 2) top = bottom - height;
+                if (draggingResizer.corner < 2) {
+                    top = bottom - height;
+                }
             }
 
             // prevent size smaller than 25
