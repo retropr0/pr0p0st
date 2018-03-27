@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>pr0p0st</title>
     <script type="text/javascript" src="../js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="../js/Colors.js"></script>
+    <script type="text/javascript" src="../js/Fonts.js"></script>
     <link rel="stylesheet" href="../css/main.css">
 </head>
 <body>
@@ -53,7 +55,7 @@
             <button class="btn" id="flarge">groß</button>
             <button class="btn orange" id="btn-image-add">Bild hinzufügen</button>
             <button class="btn red" id="fclear">Alles löschen!</button>
-            <button class="btn grey" id="help">Hilfe</button> <!-- TODO: add functionality (Modales Fenster oder so) -->
+            <button class="btn grey" id="help">Hilfe</button>
         </div>
     </div>
 
@@ -101,8 +103,8 @@
     <div id="settings">
         <fieldset>
             <legend>Einstellungen</legend>
-            <p><label for="cb-edit-images" class="field">Verschiebepunkte in Bildecken anzeigen </label><input type="checkbox" checked id="cb-edit-images"></p>
-            <p><label for="cb-keep-image-aspect" class="field">Seitenverhältnis der Bilder beibehalten </label><input type="checkbox" checked id="cb-keep-image-aspect"></p>
+            <p><input type="checkbox" checked id="cb-edit-images"><label for="cb-edit-images" class="field-label">Verschiebepunkte in Bildecken anzeigen </label></p>
+            <p><input type="checkbox" checked id="cb-keep-image-aspect"><label for="cb-keep-image-aspect" class="field-label">Seitenverhältnis der Bilder beibehalten </label></p>
             <!--<p><label for="range-image-quality" class="field">Image quality </label><input type="range" min="10" value="100" id="range-image-quality"></p>-->
         </fieldset>
     </div>

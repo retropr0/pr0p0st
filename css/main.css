@@ -351,3 +351,7 @@ p {
 #help {
     /*cursor: not-allowed;*/
 }
+
+.field-label {
+    padding-left: 1em;
+}

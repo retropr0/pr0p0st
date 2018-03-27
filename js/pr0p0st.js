@@ -5,7 +5,7 @@ $(function() {
         ctx.fillRect(0, 0, width, height);
         ctx.font = "bold 20px 'Helvetica Neue', Helvetica, sans-serif";
         //ctx.textBaseline = "bottom";
-        ctx.fillStyle = colors["c.schwuchtel"];
+        ctx.fillStyle = Colors["c.schwuchtel"];
 
 
         var lines = content.text.split("\n");
@@ -55,15 +55,15 @@ $(function() {
             for (var c = 0; c <= lines[i].length; ++c) {
                 var chr = lines[i].charAt(c);
                 if (c in colorPositions) {
-                    ctx.fillStyle = colors[colorPositions[c]];
+                    ctx.fillStyle = Colors[colorPositions[c]];
                 }
                 if (c in fontPositions) {
-                    ctx.font = fonts[fontPositions[c]];
-                    if (fontPositions[c] == "f.gross") {
+                    ctx.font = Fonts[fontPositions[c]];
+                    if (fontPositions[c] === "f.gross") {
                         lineHeight = 65;
-                    } else if (fontPositions[c] == "f.normal") {
+                    } else if (fontPositions[c] === "f.normal") {
                         lineHeight = 25;
-                    } else if (fontPositions[c] == "f.klein") {
+                    } else if (fontPositions[c] === "f.klein") {
                         lineHeight = 18;
                     }
 
@@ -124,8 +124,6 @@ $(function() {
     var textArea = $("#imagetext");
     var pr0Canvas = $("#pr0Canvas");
     var bcr = pr0Canvas[0].getBoundingClientRect();
-    var colors = {"c.fliese": "#6c432b", "c.banned": "#444444", "c.schwuchtel": "#ffffff", "c.orange": "#ee4d2e", "c.pr0mium": "#1cb992", "c.neu": "#e208ea", "c.alt": "#5bb91c", "c.mod": "#008fff", "c.admin": "#ff9900"};
-    var fonts = {"f.klein": "bold 14px 'Helvetica Neue', Helvetica, sans-serif", "f.normal": "bold 20px 'Helvetica Neue', Helvetica, sans-serif", "f.gross": "bold 60px 'Helvetica Neue', Helvetica, sans-serif"};
     var content = {"text": textArea.val(), "images": []};
     var draggingImage = -1;
     var draggingResizer = {corner: -1, image: -1};
@@ -348,7 +346,7 @@ $(function() {
     function drawDragAnchor(x, y) {
         ctx.beginPath();
         var styletmp = ctx.fillStyle;
-        ctx.fillStyle = colors["c.orange"];
+        ctx.fillStyle = Colors["c.orange"];
         ctx.arc(x, y, 8, 0, Math.PI * 2, false);
         ctx.closePath();
         ctx.fill();
