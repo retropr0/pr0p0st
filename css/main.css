@@ -300,10 +300,6 @@ p {
     display: none
 }
 
-.btn-colored-circle:hover {
-    position: relative;
-}
-
 .btn-colored-circle:hover span {
     border: #464646 1px solid;
     padding: 5px;
@@ -320,6 +316,7 @@ p {
 
 .btn-colored-circle:hover {
     cursor: pointer;
+    position: relative;
 }
 
 .btn-colored-circle.orange {
