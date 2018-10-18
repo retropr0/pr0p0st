@@ -1,5 +1,7 @@
 $(function() {
 
+    var textModifier = new TextModifier();
+
     var textArea = $("#imagetext");
     var pr0Canvas = new Pr0Canvas("pr0Canvas");
 

@@ -249,12 +249,6 @@ Pr0Canvas.prototype.drawContent = function () {
     var width = this.context.canvas.width;
     var height = this.context.canvas.height;
 
-    context.fillStyle = "#161618";
-    context.fillRect(0, 0, width, height);
-    context.font = "bold 20px 'Helvetica Neue', Helvetica, sans-serif";
-    context.fillStyle = Colors["c.schwuchtel"];
-
-    var lines = this.content.text.split("\n");
     var xPadding = 15;
     var yPadding = 15;
 
@@ -265,64 +259,36 @@ Pr0Canvas.prototype.drawContent = function () {
     var widestImage = 0;
     var lowestImage = 0;
 
+    context = this.initCanvasStyle(context, width, height);
+
+
+
+    var lines = this.content.text.split("\n");
+
+    // var tm = new TextModifier();
+    // var lines = tm.justify(this.content.text.replace("\n", ""), 150);
+    // lines = lines.split("\n");
+
     for (var i = 0; i < lines.length; ++i) {
-        x = 10;
-        var colorPositions = {};
-        var fontPositions = [];
-        var markerRe = /\${(.*?)}/;
 
-        var lh = 0, // line height
-            offset = 0; // offset after line
-        if(lines[i].search("f.gross")>0) {
-            lh = 45;
-            offset = 15
-        } else if (lines[i].search("f.normal")>0) {
-            lh = 20;
-            offset = 5;
-        } else if (lines[i].search("f.klein")>0) {
-            lh = 15;
-            offset = 3;
-        } else {
-            lh = 20;
-            offset = 5;
-        }
-        y += lh;
+        var line = {
+            x: x,
+            y: y,
+            text: lines[i],
+            colorPositions: [],
+            fontPositions: []
+        };
 
-        while ((match = markerRe.exec(lines[i])) != null) {
-            if (match[1].substring(0,2) === "c.") {
-                colorPositions[match.index] = match[1];
-            } else if((match[1].substring(0,2) === "f.")) {
-                fontPositions[match.index] = match[1];
-            }
-            lines[i] = lines[i].replace(markerRe, "");
+        y += this.getLineMaxHeight(line.text);
+        this.parseMarkers(line);
+
+        this.renderLine(context, line, y);
+        y += this.getLineOffset(line.text);
+
+        if ((line.x + xPadding) > widestLine) {
+            widestLine = line.x + xPadding;
         }
 
-        for (var c = 0; c <= lines[i].length; ++c) {
-            var chr = lines[i].charAt(c);
-            if (c in colorPositions) {
-                context.fillStyle = Colors[colorPositions[c]];
-            }
-            if (c in fontPositions) {
-                context.font = Fonts[fontPositions[c]];
-                if (fontPositions[c] === "f.gross") {
-                    lineHeight = 65;
-                } else if (fontPositions[c] === "f.normal") {
-                    lineHeight = 25;
-                } else if (fontPositions[c] === "f.klein") {
-                    lineHeight = 18;
-                }
-
-            }
-
-            context.fillText(chr, x, y);
-            x += context.measureText(chr).width;
-        }
-
-        y += offset;
-
-        if ((x + xPadding) > widestLine) {
-            widestLine = x + xPadding;
-        }
 
     }
 
@@ -364,14 +330,85 @@ Pr0Canvas.prototype.drawContent = function () {
     }
 };
 
+Pr0Canvas.prototype.initCanvasStyle = function(context, width, height) {
+    context.fillStyle = Colors.richtigesGrau;
+    context.fillRect(0, 0, width, height);
+    context.font = Fonts.normal.style;
+    context.fillStyle = Colors.schwuchtel;
+    return context;
+};
+
+
+Pr0Canvas.prototype.getLineMaxHeight = function(line) {
+    var lineHeight = 0;
+
+    if (line.search("f.gross") > 0) {
+        lineHeight = 45;
+    } else if (line.search("f.normal") > 0) {
+        lineHeight = 30;
+    } else if (line.search("f.klein") > 0) {
+        lineHeight = 15;
+    } else {
+        lineHeight = 20;
+    }
+    return lineHeight;
+};
+
+Pr0Canvas.prototype.parseMarkers = function(line) {
+    var markerRe = /\${(.*?)}/;
+    while ((match = markerRe.exec(line.text)) != null) {
+
+        if (match[1].substring(0,2) === "c.") {
+            line.colorPositions[match.index] = match[1].substring(2);
+        } else if((match[1].substring(0,2) === "f.")) {
+            line.fontPositions[match.index] = match[1].substring(2);
+        }
+
+        line.text = line.text.replace(markerRe, "");
+
+    }
+};
+
+Pr0Canvas.prototype.getLineOffset = function(line) {
+    var offset = 0;
+
+    if(line.search("f.gross") > 0) {
+        offset = 15;
+    } else if (line.search("f.normal") > 0) {
+        offset = 5;
+    } else if (line.search("f.klein") > 0) {
+        offset = 3;
+    } else {
+        offset = 5;
+    }
+    return offset;
+};
+
+Pr0Canvas.prototype.renderLine = function(context, line, y) {
+    for (var c = 0; c <= line.text.length; ++c) {
+        var chr = line.text.charAt(c);
+
+        if (c in line.colorPositions) {
+            context.fillStyle = Colors[line.colorPositions[c]];
+        }
+
+        if (c in line.fontPositions) {
+            context.font = Fonts[line.fontPositions[c]];
+        }
+
+        context.fillText(chr, line.x, y);
+        line.x += context.measureText(chr).width;
+    }
+};
+
 Pr0Canvas.prototype.drawDragAnchor = function (x, y) {
     this.context.beginPath();
-    var styletmp = this.context.fillStyle;
-    this.context.fillStyle = Colors["c.orange"];
+    var oldFillStyle = this.context.fillStyle;
+    this.context.fillStyle = Colors["orange"];
     this.context.arc(x, y, 8, 0, Math.PI * 2, false);
     this.context.closePath();
     this.context.fill();
-    this.context.fillStyle = styletmp;
+    this.context.fillStyle = oldFillStyle;
 };
 
 Pr0Canvas.prototype.anchorHitTest = function(x, y) {

@@ -1,12 +1,12 @@
-var Colors =
-        {
-            "c.fliese": "#6c432b",
-            "c.banned": "#444444",
-            "c.schwuchtel": "#ffffff",
-            "c.orange": "#ee4d2e",
-            "c.pr0mium": "#1cb992",
-            "c.neu": "#e208ea",
-            "c.alt": "#5bb91c",
-            "c.mod": "#008fff",
-            "c.admin": "#ff9900"
-        };
+var Colors = {
+    "fliese": "#6c432b",
+    "banned": "#444444",
+    "schwuchtel": "#ffffff",
+    "orange": "#ee4d2e",
+    "pr0mium": "#1cb992",
+    "neu": "#e208ea",
+    "alt": "#5bb91c",
+    "mod": "#008fff",
+    "admin": "#ff9900",
+    "richtigesGrau": "#161618"
+};
