@@ -5,6 +5,7 @@
     --schwuchtel: #ffffff;
     --neuschwuchtel: #e208ea;
     --pr0mium: #1cb992;
+    --mittelaltschwuchtel: #addc8d;
     --altschwuchtel: #5bb91c;
     --moderator: #008fff;
     --admin: #ff9900;
@@ -353,6 +354,11 @@ p {
 .btn-colored-circle.admin {
     background-color: var(--admin);
     color: var(--admin);
+}
+
+.btn-colored-circle.mittelaltschwuchtel {
+    background-color: var(--mittelaltschwuchtel);
+    color: var(--mittelaltschwuchtel);
 }
 
 .btn-colored-circle.fliese {

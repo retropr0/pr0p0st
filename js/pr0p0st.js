@@ -124,7 +124,7 @@ $(function() {
     var textArea = $("#imagetext");
     var pr0Canvas = $("#pr0Canvas");
     var bcr = pr0Canvas[0].getBoundingClientRect();
-    var colors = {"c.fliese": "#6c432b", "c.banned": "#444444", "c.schwuchtel": "#ffffff", "c.orange": "#ee4d2e", "c.pr0mium": "#1cb992", "c.neu": "#e208ea", "c.alt": "#5bb91c", "c.mod": "#008fff", "c.admin": "#ff9900"};
+    var colors = {"c.fliese": "#6c432b", "c.banned": "#444444", "c.schwuchtel": "#ffffff", "c.orange": "#ee4d2e", "c.pr0mium": "#1cb992", "c.neu": "#e208ea", "c.alt": "#5bb91c", "c.mod": "#008fff", "c.admin": "#ff9900", "c.mittel": "#addc8d"};
     var fonts = {"f.klein": "bold 14px 'Helvetica Neue', Helvetica, sans-serif", "f.normal": "bold 20px 'Helvetica Neue', Helvetica, sans-serif", "f.gross": "bold 60px 'Helvetica Neue', Helvetica, sans-serif"};
     var content = {"text": textArea.val(), "images": []};
     var draggingImage = -1;
@@ -497,6 +497,9 @@ $(function() {
     });
     $('.btn-colored-circle.admin').on('click', function() {
         addTextAtCursor('${c.admin}');
+    });
+    $('.btn-colored-circle.mittelaltschwuchtel').on('click', function() {
+        addTextAtCursor('${c.mittel}');
     });
     $('#closeHelp').on('click', function() {
         $('#modalHelp').fadeOut("fast");
