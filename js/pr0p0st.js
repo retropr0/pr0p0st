@@ -418,33 +418,18 @@ $(function() {
     }
 
     $("#a-download-png").on("click", function () {
-        $("#cb-edit-images").prop("checked", false);
-        withAnchors = false;
-        drawContent(content, ctx.canvas.width, ctx.canvas.height);
-
-        var binaryImage = dataURLtoBlob(pr0Canvas[0].toDataURL("image/png"));
-        var imageUrlData = URL.createObjectURL(binaryImage);
-
-        $(this).attr("href", imageUrlData);
+        $(this).attr('href', pr0Canvas[0].toDataURL("image/png"));
         $(this).attr("download", "OC.png");
     });
 
-    function dataURLtoBlob(dataurl) { //credits: http://stackoverflow.com/questions/23150333/html5-javascript-dataurl-to-blob-blob-to-dataurl
-        var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
-            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-        while(n--){
-            u8arr[n] = bstr.charCodeAt(n);
-        }
-        return new Blob([u8arr], {type:mime});
-    }
-
-
     function refreshCanvasDownloadSizeLabel() {
-        var binaryImage = dataURLtoBlob(pr0Canvas[0].toDataURL("image/png"));
-        var size = (binaryImage.size / (1024 * 1024)).toFixed(2);
-        var percentage =  100 - Math.round( size / 0.12);
-        $("#div-image-info-size-cover").css("width", percentage + "%");
-        $("#div-image-info-size-cover span").html(size + " MB");
+        let chars = pr0Canvas[0].toDataURL("image/png").length;
+        // base64 uses roughly 8bit (= 1 character) for 6bit of image data
+        let mb = (chars / 8 * 6) / (1024 * 1024)
+        mb = (Math.round(mb * 100) / 100).toFixed(2);
+        let percentage =  100 - Math.round(mb / 0.12);
+        $("#div-image-info-size-cover").css("width", `${percentage}%`);
+        $("#div-image-info-size-cover span").html(`${mb} MB`);
     }
 
 
