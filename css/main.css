@@ -8,6 +8,7 @@
     --mittelaltschwuchtel: #addc8d;
     --altschwuchtel: #5bb91c;
     --moderator: #008fff;
+    --alt-moderator: #7fc7ff;
     --admin: #ff9900;
     --richtiges-grau: #161618;
     --falsches-grau: #4f4f4f;
@@ -186,7 +187,7 @@ p {
 }
 
 #imagetext {
-    width: 800px;
+    width: 850px;
     height: 23em;
     padding: 5px;
     background-color: #1B1E1F;
@@ -267,7 +268,7 @@ p {
 }
 
 #colorbuttons {
-    padding-top: 8px;
+    padding-top: 12px;
     float: left;
 }
 
@@ -291,7 +292,7 @@ p {
     vertical-align: bottom;
     width:25px;
     height:25px;
-    margin: 5px 5px;
+    margin: 3px;
     border-radius: 50%;
     background: #464646;
     border: none;
@@ -351,6 +352,11 @@ p {
     color: var(--moderator);
 }
 
+.btn-colored-circle.alt-moderator {
+    background-color: var(--alt-moderator);
+    color: var(--alt-moderator);
+}
+
 .btn-colored-circle.admin {
     background-color: var(--admin);
     color: var(--admin);
@@ -364,13 +370,9 @@ p {
 .btn-colored-circle.fliese {
     background-color: var(--fliese);
     color: var(--fliese);
-    width:15px;
-    height:15px;
 }
 
 .btn-colored-circle.banned {
     background-color: var(--banned);
     color: var(--banned);
-    width:15px;
-    height:15px;
 }
