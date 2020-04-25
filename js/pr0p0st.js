@@ -20,21 +20,25 @@ $(function() {
         var lowestImage = 0;
 
         for (var i = 0; i < lines.length; ++i) {
-            x = 10;
+            x = xPadding;
             var colorPositions = {};
             var fontPositions = [];
             var markerRe = /\${(.*?)}/;
 
             var lh = 0, // line height
-                offset = 0; // offset after line
-            if(lines[i].search("f.gross")>0) {
+            offset = 0; // offset after line
+
+            if(lines[i].search("f.rießig")>0) {
                 lh = 45;
-                offset = 15
+                offset = 10
+            } else if(lines[i].search("f.gross")>0) {
+                lh = 28;
+                offset = 8;
             } else if (lines[i].search("f.normal")>0) {
-                lh = 20;
+                lh = 17;
                 offset = 5;
             } else if (lines[i].search("f.klein")>0) {
-                lh = 15;
+                lh = 13;
                 offset = 3;
             } else {
                 lh = 20;
@@ -137,7 +141,7 @@ $(function() {
         "c.mittel": "#addc8d",
         "c.alt-mod": "#7fc7ff",        
     };
-    var fonts = {"f.klein": "bold 14px 'Helvetica Neue', Helvetica, sans-serif", "f.normal": "bold 20px 'Helvetica Neue', Helvetica, sans-serif", "f.gross": "bold 60px 'Helvetica Neue', Helvetica, sans-serif"};
+    var fonts = {"f.klein": "bold 14px 'Helvetica Neue', Helvetica, sans-serif","f.normal": "bold 20px 'Helvetica Neue', Helvetica, sans-serif", "f.groß": "bold 35px 'Helvetica Neue', Helvetica, sans-serif", "f.rießig": "bold 60px 'Helvetica Neue', Helvetica, sans-serif"};
     var content = {"text": textArea.val(), "images": []};
     var draggingImage = -1;
     var draggingResizer = {corner: -1, image: -1};
