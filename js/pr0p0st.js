@@ -55,26 +55,44 @@ $(function() {
                 lines[i] = lines[i].replace(markerRe, "");
             }
 
+            var words = lines[i].split(" ");
+            var prevChars = 0;
 
-            for (var c = 0; c <= lines[i].length; ++c) {
-                var chr = lines[i].charAt(c);
-                if (c in colorPositions) {
-                    ctx.fillStyle = colors[colorPositions[c]];
-                }
-                if (c in fontPositions) {
-                    ctx.font = fonts[fontPositions[c]];
-                    if (fontPositions[c] == "f.gross") {
-                        lineHeight = 65;
-                    } else if (fontPositions[c] == "f.normal") {
-                        lineHeight = 25;
-                    } else if (fontPositions[c] == "f.klein") {
-                        lineHeight = 18;
+            for(var w = 0; w < words.length; ++w) {  
+                words[w] = words[w] + " ";
+
+                if(fixedSize) {
+                    var wordLength = 0;
+                    for (var c = 0; c <= words[w].length; ++c) {
+                        var pos = prevChars + c;
+                        var chr = words[w].charAt(c);
+                        if (pos in fontPositions) {
+                            ctx.font = fonts[fontPositions[pos]];
+                        }
+                        wordLength += ctx.measureText(chr).width;
                     }
-
+                    if(wordLength + x + xPadding> fixedWidth) {
+                        y += offset + lh;
+                        var x = xPadding;
+                    }
                 }
+                
 
-                ctx.fillText(chr, x, y);
-                x += ctx.measureText(chr).width;
+                for (var c = 0; c <= words[w].length; ++c) {
+                    var pos = prevChars + c;
+                    var chr = words[w].charAt(c);
+                    if (pos in colorPositions) {
+                        ctx.fillStyle = colors[colorPositions[pos]];
+                    }
+                    if (pos in fontPositions) {
+                        ctx.font = fonts[fontPositions[pos]];
+                    }
+    
+                    var charLength = ctx.measureText(chr).width;
+                    ctx.fillText(chr, x, y);
+                    x += charLength;
+                }
+                prevChars += words[w].length;
             }
 
             y += offset;
@@ -104,8 +122,15 @@ $(function() {
         }
 
         //Canvas resize
-        var widestElement = widestLine > widestImage ? widestLine : widestImage;
-        var highestElement = y > lowestImage ? y : lowestImage;
+        var widestElement = 0;
+        var highestElement = 0;
+        if(!fixedSize) {
+            widestElement = widestLine > widestImage ? widestLine : widestImage;
+            highestElement = y > lowestImage ? y : lowestImage;
+        } else {
+            widestElement = fixedWidth;
+            highestElement = fixedHeight;
+        }
 
         if (widestElement > 1052) {
             $('#warn').html("<p>Warnung: pr0-Content ist 1052px breit, dieses Bild ist jedoch "+Math.ceil(widestElement)+"px breit!</p>");
@@ -150,6 +175,10 @@ $(function() {
     var withAnchors = true;
     var keepAspectRatio = true;
 
+    var fixedSize = false;
+    var fixedWidth = 1052;
+    var fixedHeight = 200;
+
     var ctx = pr0Canvas[0].getContext('2d');
 
     drawContent(content, ctx.canvas.width, ctx.canvas.height);
@@ -173,6 +202,25 @@ $(function() {
 
     $("#a-refresh-size").on("click", function () {
         refreshCanvasDownloadSizeLabel();
+    });
+
+    $("#fixed-size").on("change", function () {
+        fixedSize = !!$(this).is(":checked");
+        drawContent(content, ctx.canvas.width, ctx.canvas.height);
+    });
+
+    $("#fixed-width").on("change", function () {
+        fixedWidth = $(this).val();
+        if(fixedSize) {
+            drawContent(content, ctx.canvas.width, ctx.canvas.height);
+        }
+    });
+
+    $("#fixed-height").on("change", function () {
+        fixedHeight = $(this).val();
+        if(fixedSize) {
+            drawContent(content, ctx.canvas.width, ctx.canvas.height);
+        }
     });
 
     pr0Canvas.on('dragover', function (e) {
