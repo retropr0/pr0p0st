@@ -477,7 +477,9 @@ $(function() {
         var file = e.target.files[0];
         insertImageOnPosition(file,  10, -1); // -1 = bottom
     });
-
+    $('#flargest').click(function() {
+        addTextAtCursor('${f.rießig}');
+    });
     $('#flarge').click(function() {
         addTextAtCursor('${f.gross}');
     });
