@@ -74,10 +74,10 @@ $(function() {
             offset = 0; // offset after line
 
             if(lines[i].search("f.rießig")>0) {
-                lh = 45;
-                offset = 10
+                lh = 75;
+                offset = 15
             } else if(lines[i].search("f.gross")>0) {
-                lh = 28;
+                lh = 37;
                 offset = 8;
             } else if (lines[i].search("f.normal")>0) {
                 lh = 17;
@@ -234,7 +234,7 @@ $(function() {
         "c.mittel": "#addc8d",
         "c.alt-mod": "#7fc7ff",        
     };
-    var fonts = {"f.klein": "bold 14px 'Helvetica Neue', Helvetica, sans-serif","f.normal": "bold 20px 'Helvetica Neue', Helvetica, sans-serif", "f.groß": "bold 35px 'Helvetica Neue', Helvetica, sans-serif", "f.rießig": "bold 60px 'Helvetica Neue', Helvetica, sans-serif"};
+    var fonts = {"f.klein": "bold 14px 'Helvetica Neue', Helvetica, sans-serif","f.normal": "bold 22px 'Helvetica Neue', Helvetica, sans-serif", "f.gross": "bold 50px 'Helvetica Neue', Helvetica, sans-serif", "f.rießig": "bold 100px 'Helvetica Neue', Helvetica, sans-serif"};
     var content = {"text": textArea.val(), "images": []};
     var draggingImage = -1;
     var draggingResizer = {corner: -1, image: -1};
