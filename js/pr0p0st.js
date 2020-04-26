@@ -64,14 +64,14 @@ $(function() {
 
         var firstLine = true;
 
+        var lh = 20, // line height
+        offset = 5; // offset after line
+
         for (var i = 0; i < lines.length; ++i) {
             x = xPadding;
             var colorPositions = {};
             var fontPositions = [];
             var markerRe = /\${(.*?)}/;
-
-            var lh = 0, // line height
-            offset = 0; // offset after line
 
             if(lines[i].search("f.rießig")>0) {
                 lh = 75;
@@ -85,9 +85,6 @@ $(function() {
             } else if (lines[i].search("f.klein")>0) {
                 lh = 13;
                 offset = 3;
-            } else {
-                lh = 20;
-                offset = 5;
             }
 
             newLine();
