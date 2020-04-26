@@ -7,6 +7,21 @@ $(function() {
         //ctx.textBaseline = "bottom";
         ctx.fillStyle = colors["c.schwuchtel"];
 
+        var newLine = function() {
+            var tempY = y;
+            if(!firstLine) {
+                tempY += offset;
+            }
+            tempY += lh;
+            x = xPadding;
+            if(preview &&
+                tempY + yPadding > fixedHeight / 2 - fixedWidth / 2 && 
+                tempY - yPadding < fixedHeight / 2 + fixedWidth / 2) {
+                    y = fixedHeight / 2 + fixedWidth / 2 + yPadding + offset + lh;
+            } else {
+                y = tempY;
+            }
+        }
 
         var lines = content.text.split("\n");
         var xPadding = 15;
@@ -18,6 +33,8 @@ $(function() {
         var widestLine = 0;
         var widestImage = 0;
         var lowestImage = 0;
+
+        var firstLine = true;
 
         for (var i = 0; i < lines.length; ++i) {
             x = xPadding;
@@ -44,7 +61,9 @@ $(function() {
                 lh = 20;
                 offset = 5;
             }
-            y += lh;
+
+            newLine();
+            firstLine = false;
 
             while ((match = markerRe.exec(lines[i])) != null) {
                 if (match[1].substring(0,2) === "c.") {
@@ -59,7 +78,9 @@ $(function() {
             var prevChars = 0;
 
             for(var w = 0; w < words.length; ++w) {  
-                words[w] = words[w] + " ";
+                if(w != words.length - 1) {
+                    words[w] = words[w] + " ";
+                }
 
                 if(fixedSize) {
                     var wordLength = 0;
@@ -71,9 +92,8 @@ $(function() {
                         }
                         wordLength += ctx.measureText(chr).width;
                     }
-                    if(wordLength + x + xPadding> fixedWidth) {
-                        y += offset + lh;
-                        var x = xPadding;
+                    if(wordLength + x + xPadding > fixedWidth) {
+                        newLine();
                     }
                 }
                 
@@ -95,15 +115,14 @@ $(function() {
                 prevChars += words[w].length;
             }
 
-            y += offset;
-
             if ((x + xPadding) > widestLine) {
                 widestLine = x + xPadding;
             }
 
         }
 
-        y += yPadding; // spacing bottom
+        // spacing bottom
+        y += yPadding;
 
         //Images
         for (var f = 0;f < content.images.length; ++f) {
@@ -121,24 +140,45 @@ $(function() {
             lowestImage = img.size.height + img.pos.y + yPadding > lowestImage ? img.size.height + img.pos.y + yPadding : lowestImage;
         }
 
+        //Preview Rectangle
+        if(preview) {
+            ctx.lineWidth = previewStrokeWidth;
+            ctx.strokeStyle = previewColor;
+            ctx.strokeRect(previewStrokeWidth / 2,
+                fixedHeight / 2 - fixedWidth / 2 + previewStrokeWidth / 2,
+                fixedWidth - previewStrokeWidth,
+                fixedWidth - previewStrokeWidth);
+        }
+
         //Canvas resize
-        var widestElement = 0;
-        var highestElement = 0;
-        if(!fixedSize) {
-            widestElement = widestLine > widestImage ? widestLine : widestImage;
-            highestElement = y > lowestImage ? y : lowestImage;
-        } else {
+        var widestElement = widestLine > widestImage ? widestLine : widestImage;
+        var highestElement = y > lowestImage ? y : lowestImage;
+        var maxY = 0;
+
+        if(fixedSize) {
             widestElement = fixedWidth;
+            maxY = highestElement;
             highestElement = fixedHeight;
         }
 
-        if (widestElement > 1052) {
-            $('#warn').html("<p>Warnung: pr0-Content ist 1052px breit, dieses Bild ist jedoch "+Math.ceil(widestElement)+"px breit!</p>");
-            $('#warn p').attr('unselectable', 'on').css('user-select', 'none').on('selectstart', false);
-            $('#warn').css("display", "block");
-        } else {
-            $('#warn').html('');
-            $('#warn').css("display", "none");
+        if(!previewColorPickMode) {
+            if (preview && fixedWidth > fixedHeight) {
+                $('#warn').html("<p>Warnung: Vorschaubild kann nur generiert werden wenn die Höhe größer ist als die Breite!</p>");
+                $('#warn p').attr('unselectable', 'on').css('user-select', 'none').on('selectstart', false);
+                $('#warn').css("display", "block");
+            } else if (fixedSize && maxY > fixedHeight) {
+                $('#warn').html("<p>Warnung: Der Text passt nicht auf die Bildgröße, es könnte sein das dieser unten abgeschnitten ist ...</p>");
+                $('#warn p').attr('unselectable', 'on').css('user-select', 'none').on('selectstart', false);
+                $('#warn').css("display", "block");
+                
+            } else if (widestElement > 1052) {
+                $('#warn').html("<p>Warnung: pr0-Content ist 1052px breit, dieses Bild ist jedoch "+Math.ceil(widestElement)+"px breit!</p>");
+                $('#warn p').attr('unselectable', 'on').css('user-select', 'none').on('selectstart', false);
+                $('#warn').css("display", "block");
+            } else {
+                $('#warn').html('');
+                $('#warn').css("display", "none");
+            }
         }
 
         if ((widestElement | 0) != ctx.canvas.width || (highestElement | 0) != ctx.canvas.height) {
@@ -177,7 +217,36 @@ $(function() {
 
     var fixedSize = false;
     var fixedWidth = 1052;
-    var fixedHeight = 200;
+    var fixedHeight = 1250;
+
+    var preview = false;
+    var previewStrokeWidth = 50;
+    var previewColor = colors["c.orange"];
+    var previewColorPickMode = false;
+
+    $("#fixed-width").val(fixedWidth);
+    $("#fixed-height").val(fixedHeight);
+    $("#preview-frame-stroke").val(previewStrokeWidth);
+    $('#preview-frame-color').css("background", previewColor)
+
+    var setPreviewColorPickMode = function(newVal) {
+        previewColorPickMode = newVal;
+        if(previewColorPickMode) {
+            $('#warn').html("<p>Information: Du bist derzeit im Rahmenfarben Auswahlmodus.<br>Wähle oben eine Textfarbe aus, oder drücke erneut auf den Rahmenfarbe Knopf um diesen zu beenden.</p>");
+            $('#warn p').attr('unselectable', 'on').css('user-select', 'none').on('selectstart', false);
+            $('#warn').css("display", "block");
+        } else {
+            $('#warn').html('');
+            $('#warn').css("display", "none");
+        }
+    }
+
+    var setPreviewFrameColor = function(colorName) {
+        previewColor = colors[colorName];
+        setPreviewColorPickMode(false);
+        drawContent(content, ctx.canvas.width, ctx.canvas.height);
+        $('#preview-frame-color').css("background", previewColor);
+    }
 
     var ctx = pr0Canvas[0].getContext('2d');
 
@@ -196,6 +265,7 @@ $(function() {
         withAnchors = !!$(this).is(":checked");
         drawContent(content, ctx.canvas.width, ctx.canvas.height);
     });
+
     $("#cb-keep-image-aspect").on("change",function() {
         keepAspectRatio = !!$(this).is(":checked");
     });
@@ -207,6 +277,10 @@ $(function() {
     $("#fixed-size").on("change", function () {
         fixedSize = !!$(this).is(":checked");
         drawContent(content, ctx.canvas.width, ctx.canvas.height);
+        $("#fixed-size-toggle").css("display", fixedSize? "block": "none");
+        if(!fixedSize) {
+            preview = false;
+        }
     });
 
     $("#fixed-width").on("change", function () {
@@ -221,6 +295,17 @@ $(function() {
         if(fixedSize) {
             drawContent(content, ctx.canvas.width, ctx.canvas.height);
         }
+    });
+
+    $("#preview").on("change", function () {
+        preview = !!$(this).is(":checked");
+        drawContent(content, ctx.canvas.width, ctx.canvas.height);
+        $("#preview-toggle").css("display", preview? "block": "none");
+    });
+
+    $("#preview-frame-stroke").on("change", function () {
+        previewStrokeWidth = $(this).val();
+        drawContent(content, ctx.canvas.width, ctx.canvas.height);
     });
 
     pr0Canvas.on('dragover', function (e) {
@@ -538,37 +623,81 @@ $(function() {
         addTextAtCursor('${f.klein}');
     });
     $('.btn-colored-circle.fliese').on('click', function() {
-        addTextAtCursor('${c.fliese}');
+        if(!previewColorPickMode) {
+            addTextAtCursor('${c.fliese}');
+        } else {
+            setPreviewFrameColor('c.fliese');
+        }
     });
     $('.btn-colored-circle.banned').on('click', function() {
-        addTextAtCursor('${c.banned}');
+        if(!previewColorPickMode) {
+            addTextAtCursor('${c.banned}');
+        } else {
+            setPreviewFrameColor('c.banned');
+        }
     });
     $('.btn-colored-circle.orange').on('click', function() {
-        addTextAtCursor('${c.orange}');
+        if(!previewColorPickMode) {
+            addTextAtCursor('${c.orange}');
+        } else {
+            setPreviewFrameColor('c.orange');
+        }
     });
     $('.btn-colored-circle.schwuchtel').on('click', function() {
-        addTextAtCursor('${c.schwuchtel}');
+        if(!previewColorPickMode) {
+            addTextAtCursor('${c.schwuchtel}');
+        } else {
+            setPreviewFrameColor('c.schwuchtel');
+        }
     });
     $('.btn-colored-circle.neuschwuchtel').on('click', function() {
-        addTextAtCursor('${c.neu}');
+        if(!previewColorPickMode) {
+            addTextAtCursor('${c.neu}');
+        } else {
+            setPreviewFrameColor('c.neu');
+        }
     });
     $('.btn-colored-circle.pr0mium').on('click', function() {
-        addTextAtCursor('${c.pr0mium}');
+        if(!previewColorPickMode) {
+            addTextAtCursor('${c.pr0mium}');
+        } else {
+            setPreviewFrameColor('c.pr0mium');
+        }
     });
     $('.btn-colored-circle.altschwuchtel').on('click', function() {
-        addTextAtCursor('${c.alt}');
+        if(!previewColorPickMode) {
+            addTextAtCursor('${c.alt}');
+        } else {
+            setPreviewFrameColor('c.alt');
+        }
     });
     $('.btn-colored-circle.moderator').on('click', function() {
-        addTextAtCursor('${c.mod}');
+        if(!previewColorPickMode) {
+            addTextAtCursor('${c.mod}');
+        } else {
+            setPreviewFrameColor('c.mod');
+        }
     });
     $('.btn-colored-circle.alt-moderator').on('click', function() {
-        addTextAtCursor('${c.alt-mod}');
+        if(!previewColorPickMode) {
+            addTextAtCursor('${c.alt-mod}');
+        } else {
+            setPreviewFrameColor('c.alt-mod');
+        }
     });
     $('.btn-colored-circle.admin').on('click', function() {
-        addTextAtCursor('${c.admin}');
+        if(!previewColorPickMode) {
+            addTextAtCursor('${c.admin}');
+        } else {
+            setPreviewFrameColor('c.admin');
+        }
     });
     $('.btn-colored-circle.mittelaltschwuchtel').on('click', function() {
-        addTextAtCursor('${c.mittel}');
+        if(!previewColorPickMode) {
+            addTextAtCursor('${c.mittel}');
+        } else {
+            setPreviewFrameColor('c.mittel');
+        }
     });
     $('#closeHelp').on('click', function() {
         $('#modalHelp').fadeOut("fast");
@@ -584,5 +713,8 @@ $(function() {
             drawContent(content, ctx.canvas.width, ctx.canvas.height);
             refreshCanvasDownloadSizeLabel();
         }
+    });
+    $('#preview-frame-color').click(function() {
+        setPreviewColorPickMode(!previewColorPickMode);
     });
 });

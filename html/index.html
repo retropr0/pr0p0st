@@ -34,15 +34,6 @@
 
     <div id="warn"></div>
 
-    <div id="options">
-        <fieldset>
-            <legend>Optionen</legend>
-            <p><label for="fixed-size" class="field">Feste Bildgröße: </label><input type="checkbox" id="fixed-size"></p>
-            <p><label for="fixed-width" class="field">Breite: </label><input type="number" id="fixed-width" value="1052"></p>
-            <p><label for="fixed-height" class="field">Höhe: </label><input type="number" id="fixed-height" value="200"></p>
-        </fieldset>
-    </div>
-
     <div id="controls">
         <div id="colorbuttons">
             <button class="btn-colored-circle banned"><span>banned</span></button>
@@ -100,6 +91,22 @@
                 </div>
 
             </p>
+        </fieldset>
+    </div>
+
+    <div id="options">
+        <fieldset>
+            <legend>Optionen</legend>
+            <p><label for="fixed-size" class="field">Feste Bildgröße: </label><input type="checkbox" id="fixed-size"></p>
+            <div id="fixed-size-toggle" style="display:none">
+                <p><label for="fixed-width" class="field">Breite: </label><input type="number" id="fixed-width"></p>
+                <p><label for="fixed-height" class="field">Höhe: </label><input type="number" id="fixed-height"></p>
+                <p><label for="preview" class="field">Vorschaufenster: </label><input type="checkbox" id="preview"></p>
+                <div id="preview-toggle" style="display:none">
+                    <p><label for="preview-frame-stroke" class="field">Rahmenbreite: </label><input type="number" id="preview-frame-stroke"></p>
+                    <p><label for="preview-frame-color" class="field">Rahmenfarbe: </label><button class="btn-colored-circle" id="preview-frame-color"></button></p>
+                </div>
+            </div>
         </fieldset>
     </div>
 
