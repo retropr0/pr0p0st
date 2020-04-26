@@ -7,19 +7,47 @@ $(function() {
         //ctx.textBaseline = "bottom";
         ctx.fillStyle = colors["c.schwuchtel"];
 
+        // Makes sure that the next word will fit onto the line
+        var doesWordFit = function(wordLength) {
+            // If inside of preview Frame adds previewStrokeWidth
+            if(preview &&
+                y > fixedHeight / 2 - fixedWidth / 2 + previewStrokeWidth && 
+                y < fixedHeight / 2 + fixedWidth / 2 - previewStrokeWidth) {
+                return wordLength + x + xPadding + previewStrokeWidth > fixedWidth;  
+            } else {
+                return wordLength + x + xPadding > fixedWidth;
+            }
+        }
+
         var newLine = function() {
             var tempY = y;
+
             if(!firstLine) {
                 tempY += offset;
             }
             tempY += lh;
-            x = xPadding;
+
             if(preview &&
-                tempY + yPadding > fixedHeight / 2 - fixedWidth / 2 && 
-                tempY - yPadding < fixedHeight / 2 + fixedWidth / 2) {
-                    y = fixedHeight / 2 + fixedWidth / 2 + yPadding + offset + lh;
+                tempY > fixedHeight / 2 - fixedWidth / 2 - yPadding && 
+                tempY < fixedHeight / 2 - fixedWidth / 2 + previewStrokeWidth + yPadding + lh) {
+                    // If tempY is in the top part of the frame, set y bellow it
+                    y = fixedHeight / 2 - fixedWidth / 2 + previewStrokeWidth + yPadding + lh;
+                    x = xPadding + previewStrokeWidth;
+            } else if(preview &&
+                tempY > fixedHeight / 2 - fixedWidth / 2 + previewStrokeWidth && 
+                tempY < fixedHeight / 2 + fixedWidth / 2 - previewStrokeWidth) {
+                    // If tempY is inside the frame, update it normal but offset x by strokeWidth
+                    y = tempY;
+                    x = xPadding + previewStrokeWidth;          
+            } else if(preview &&
+                tempY > fixedHeight / 2 + fixedWidth / 2 - previewStrokeWidth - yPadding && 
+                tempY < fixedHeight / 2 + fixedWidth / 2 + yPadding + lh) {
+                    // If tempY is in the bot part of the frame, set y bellow the frame and x to normal
+                    y = fixedHeight / 2 + fixedWidth / 2 + yPadding + lh;
+                    x = xPadding;          
             } else {
                 y = tempY;
+                x = xPadding;
             }
         }
 
@@ -92,7 +120,7 @@ $(function() {
                         }
                         wordLength += ctx.measureText(chr).width;
                     }
-                    if(wordLength + x + xPadding > fixedWidth) {
+                    if(doesWordFit(wordLength)) {
                         newLine();
                     }
                 }
@@ -217,7 +245,7 @@ $(function() {
 
     var fixedSize = false;
     var fixedWidth = 1052;
-    var fixedHeight = 1250;
+    var fixedHeight = 1052;
 
     var preview = false;
     var previewStrokeWidth = 50;
@@ -232,7 +260,7 @@ $(function() {
     var setPreviewColorPickMode = function(newVal) {
         previewColorPickMode = newVal;
         if(previewColorPickMode) {
-            $('#warn').html("<p>Information: Du bist derzeit im Rahmenfarben Auswahlmodus.<br>Wähle oben eine Textfarbe aus, oder drücke erneut auf den Rahmenfarbe Knopf um diesen zu beenden.</p>");
+            $('#warn').html("<p>Information: Du bist derzeit im Rahmenfarben Auswahlmodus.<br>Wähle direkt unter diesem Text eine Farbe aus, oder drücke erneut auf den Rahmenfarbe Knopf um diesen zu beenden.</p>");
             $('#warn p').attr('unselectable', 'on').css('user-select', 'none').on('selectstart', false);
             $('#warn').css("display", "block");
         } else {
@@ -276,11 +304,14 @@ $(function() {
 
     $("#fixed-size").on("change", function () {
         fixedSize = !!$(this).is(":checked");
-        drawContent(content, ctx.canvas.width, ctx.canvas.height);
-        $("#fixed-size-toggle").css("display", fixedSize? "block": "none");
         if(!fixedSize) {
             preview = false;
+            $("#preview").prop("checked", false);
+            $("#preview-toggle").css("display", preview? "block": "none");
         }
+        $("#fixed-size-toggle").css("display", fixedSize? "block": "none");
+
+        drawContent(content, ctx.canvas.width, ctx.canvas.height);
     });
 
     $("#fixed-width").on("change", function () {
