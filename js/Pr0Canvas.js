@@ -244,6 +244,12 @@ Pr0Canvas.prototype.dataURLtoBlob = function (dataurl) {
     return new Blob([u8arr], {type:mime});
 };
 
+Pr0Canvas.prototype.drawContentIncremental = function() {
+
+
+
+};
+
 Pr0Canvas.prototype.drawContent = function () {
     var context = this.context;
     var width = this.context.canvas.width;
@@ -261,13 +267,8 @@ Pr0Canvas.prototype.drawContent = function () {
 
     context = this.initCanvasStyle(context, width, height);
 
-
-
     var lines = this.content.text.split("\n");
 
-    // var tm = new TextModifier();
-    // var lines = tm.justify(this.content.text.replace("\n", ""), 150);
-    // lines = lines.split("\n");
 
     for (var i = 0; i < lines.length; ++i) {
 
