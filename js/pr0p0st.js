@@ -1,6 +1,7 @@
 $(function() {
 
     var drawContent = function(content, width, height) {
+        console.log("---REDRAW---");
         ctx.fillStyle = "#161618";
         ctx.fillRect(0, 0, width, height);
         ctx.font = "bold 20px 'Helvetica Neue', Helvetica, sans-serif";
@@ -13,9 +14,9 @@ $(function() {
             if(preview &&
                 y > fixedHeight / 2 - fixedWidth / 2 + previewStrokeWidth && 
                 y < fixedHeight / 2 + fixedWidth / 2 - previewStrokeWidth) {
-                return wordLength + x + xPadding + previewStrokeWidth > fixedWidth;  
+                return wordLength + x + xPadding + previewStrokeWidth < fixedWidth;  
             } else {
-                return wordLength + x + xPadding > fixedWidth;
+                return wordLength + x + xPadding < fixedWidth;
             }
         }
 
@@ -33,21 +34,29 @@ $(function() {
                     // If tempY is in the top part of the frame, set y bellow it
                     y = fixedHeight / 2 - fixedWidth / 2 + previewStrokeWidth + yPadding + lh;
                     x = xPadding + previewStrokeWidth;
+                    console.log("TopPartSkip");
+                    console.log("y: " + y);
             } else if(preview &&
                 tempY > fixedHeight / 2 - fixedWidth / 2 + previewStrokeWidth && 
                 tempY < fixedHeight / 2 + fixedWidth / 2 - previewStrokeWidth) {
                     // If tempY is inside the frame, update it normal but offset x by strokeWidth
                     y = tempY;
-                    x = xPadding + previewStrokeWidth;          
+                    x = xPadding + previewStrokeWidth; 
+                    console.log("InsideFrame");    
+                    console.log("y: " + y);     
             } else if(preview &&
                 tempY > fixedHeight / 2 + fixedWidth / 2 - previewStrokeWidth - yPadding && 
                 tempY < fixedHeight / 2 + fixedWidth / 2 + yPadding + lh) {
                     // If tempY is in the bot part of the frame, set y bellow the frame and x to normal
                     y = fixedHeight / 2 + fixedWidth / 2 + yPadding + lh;
-                    x = xPadding;          
+                    x = xPadding;  
+                    console.log("BotPartSkip");      
+                    console.log("y: " + y);  
             } else {
                 y = tempY;
                 x = xPadding;
+                console.log("Default");
+                console.log("y: " + y);
             }
         }
 
@@ -117,7 +126,7 @@ $(function() {
                         }
                         wordLength += ctx.measureText(chr).width;
                     }
-                    if(doesWordFit(wordLength)) {
+                    if(!doesWordFit(wordLength)) {
                         newLine();
                     }
                 }
@@ -312,16 +321,22 @@ $(function() {
     });
 
     $("#fixed-width").on("change", function () {
-        fixedWidth = $(this).val();
-        if(fixedSize) {
-            drawContent(content, ctx.canvas.width, ctx.canvas.height);
+        let inputWidth = Number($(this).val());
+        if(inputWidth > 0 && inputWidth < 65536) {
+            fixedWidth = inputWidth;
+            if(fixedSize) {
+                drawContent(content, ctx.canvas.width, ctx.canvas.height);
+            }
         }
     });
 
     $("#fixed-height").on("change", function () {
-        fixedHeight = $(this).val();
-        if(fixedSize) {
-            drawContent(content, ctx.canvas.width, ctx.canvas.height);
+        let inputHeight = Number($(this).val());
+        if(inputHeight > 0 && inputHeight < 65536) {
+            fixedHeight = inputHeight;
+            if(fixedSize) {
+                drawContent(content, ctx.canvas.width, ctx.canvas.height);
+            }
         }
     });
 
@@ -332,8 +347,11 @@ $(function() {
     });
 
     $("#preview-frame-stroke").on("change", function () {
-        previewStrokeWidth = $(this).val();
-        drawContent(content, ctx.canvas.width, ctx.canvas.height);
+        let inputWidth = Number($(this).val());
+        if(inputWidth > 0 && inputWidth < fixedWidth/2) {
+            previewStrokeWidth = inputWidth;
+            drawContent(content, ctx.canvas.width, ctx.canvas.height);
+        }
     });
 
     pr0Canvas.on('dragover', function (e) {
