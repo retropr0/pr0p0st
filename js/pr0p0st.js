@@ -1,7 +1,6 @@
 $(function() {
 
     var drawContent = function(content, width, height) {
-        console.log("---REDRAW---");
         ctx.fillStyle = "#161618";
         ctx.fillRect(0, 0, width, height);
         ctx.font = "bold 20px 'Helvetica Neue', Helvetica, sans-serif";
@@ -21,43 +20,30 @@ $(function() {
         }
 
         var newLine = function() {
-            var tempY = y;
-
-            if(!firstLine) {
-                tempY += offset;
-            }
-            tempY += lh;
-
+            nextY += lh;
             if(preview &&
-                tempY > fixedHeight / 2 - fixedWidth / 2 - yPadding && 
-                tempY < fixedHeight / 2 - fixedWidth / 2 + previewStrokeWidth + yPadding + lh) {
+                nextY > fixedHeight / 2 - fixedWidth / 2 - yPadding && 
+                nextY < fixedHeight / 2 - fixedWidth / 2 + previewStrokeWidth + yPadding + lh) {
                     // If tempY is in the top part of the frame, set y bellow it
                     y = fixedHeight / 2 - fixedWidth / 2 + previewStrokeWidth + yPadding + lh;
                     x = xPadding + previewStrokeWidth;
-                    console.log("TopPartSkip");
-                    console.log("y: " + y);
             } else if(preview &&
-                tempY > fixedHeight / 2 - fixedWidth / 2 + previewStrokeWidth && 
-                tempY < fixedHeight / 2 + fixedWidth / 2 - previewStrokeWidth) {
+                nextY > fixedHeight / 2 - fixedWidth / 2 + previewStrokeWidth && 
+                nextY < fixedHeight / 2 + fixedWidth / 2 - previewStrokeWidth) {
                     // If tempY is inside the frame, update it normal but offset x by strokeWidth
-                    y = tempY;
+                    y = nextY;
                     x = xPadding + previewStrokeWidth; 
-                    console.log("InsideFrame");    
-                    console.log("y: " + y);     
             } else if(preview &&
-                tempY > fixedHeight / 2 + fixedWidth / 2 - previewStrokeWidth - yPadding && 
-                tempY < fixedHeight / 2 + fixedWidth / 2 + yPadding + lh) {
+                nextY > fixedHeight / 2 + fixedWidth / 2 - previewStrokeWidth - yPadding && 
+                nextY < fixedHeight / 2 + fixedWidth / 2 + yPadding + lh) {
                     // If tempY is in the bot part of the frame, set y bellow the frame and x to normal
                     y = fixedHeight / 2 + fixedWidth / 2 + yPadding + lh;
                     x = xPadding;  
-                    console.log("BotPartSkip");      
-                    console.log("y: " + y);  
             } else {
-                y = tempY;
+                y = nextY;
                 x = xPadding;
-                console.log("Default");
-                console.log("y: " + y);
             }
+            nextY = y + offset;
         }
 
         var lines = content.text.split("\n");
@@ -66,6 +52,7 @@ $(function() {
 
         var x = xPadding;
         var y = yPadding;
+        var nextY = y;
 
         var widestLine = 0;
         var widestImage = 0;
@@ -84,7 +71,7 @@ $(function() {
 
             if(lines[i].search("f.riesig")>0) {
                 lh = 75;
-                offset = 15
+                offset = 25;
             } else if(lines[i].search("f.gross")>0) {
                 lh = 37;
                 offset = 8;
@@ -111,6 +98,8 @@ $(function() {
             var words = lines[i].split(" ");
             var prevChars = 0;
 
+            var wordsInLine = 0;
+
             for(var w = 0; w < words.length; ++w) {  
                 if(w != words.length - 1) {
                     words[w] = words[w] + " ";
@@ -127,7 +116,12 @@ $(function() {
                         wordLength += ctx.measureText(chr).width;
                     }
                     if(!doesWordFit(wordLength)) {
-                        newLine();
+                        if(wordsInLine != 0) {
+                            newLine();
+                        }
+                        wordsInLine = 0;
+                    } else {
+                        wordsInLine++;
                     }
                 }
                 
