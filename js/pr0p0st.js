@@ -73,7 +73,7 @@ $(function() {
             var fontPositions = [];
             var markerRe = /\${(.*?)}/;
 
-            if(lines[i].search("f.rießig")>0) {
+            if(lines[i].search("f.riesig")>0) {
                 lh = 75;
                 offset = 15
             } else if(lines[i].search("f.gross")>0) {
@@ -231,7 +231,7 @@ $(function() {
         "c.mittel": "#addc8d",
         "c.alt-mod": "#7fc7ff",        
     };
-    var fonts = {"f.klein": "bold 14px 'Helvetica Neue', Helvetica, sans-serif","f.normal": "bold 22px 'Helvetica Neue', Helvetica, sans-serif", "f.gross": "bold 50px 'Helvetica Neue', Helvetica, sans-serif", "f.rießig": "bold 100px 'Helvetica Neue', Helvetica, sans-serif"};
+    var fonts = {"f.klein": "bold 14px 'Helvetica Neue', Helvetica, sans-serif","f.normal": "bold 22px 'Helvetica Neue', Helvetica, sans-serif", "f.gross": "bold 50px 'Helvetica Neue', Helvetica, sans-serif", "f.riesig": "bold 100px 'Helvetica Neue', Helvetica, sans-serif"};
     var content = {"text": textArea.val(), "images": []};
     var draggingImage = -1;
     var draggingResizer = {corner: -1, image: -1};
@@ -639,7 +639,7 @@ $(function() {
         insertImageOnPosition(file,  10, -1); // -1 = bottom
     });
     $('#flargest').click(function() {
-        addTextAtCursor('${f.rießig}');
+        addTextAtCursor('${f.riesig}');
     });
     $('#flarge').click(function() {
         addTextAtCursor('${f.gross}');
