@@ -53,6 +53,7 @@
             <button class="btn" id="fsmall">klein</button>
             <button class="btn" id="fmedium">normal</button>
             <button class="btn" id="flarge">groß</button>
+            <button class="btn" id="flargest">riesig</button>
             <button class="btn orange" id="btn-image-add">Bild hinzufügen</button>
             <button class="btn red" id="fclear">Alles löschen!</button>
             <button class="btn grey" id="help">Hilfe</button> <!-- TODO: add functionality (Modales Fenster oder so) -->
@@ -61,7 +62,7 @@
 
     <div id="edit-zone">
         <div id="edit-textarea">
-            <textarea id="imagetext">${f.gross}${c.orange}Krebs ist scheiße&#10;${f.normal}${c.schwuchtel}Hier bitte guten OC einfügen,&#10;${f.klein}und Benis farmen&#10;&#10;${c.neu}fick ${c.mod}dich ${c.admin}Krebs!</textarea>
+            <textarea id="imagetext">${f.riesig}${c.orange}Krebs ist scheiße&#10;${f.normal}${c.schwuchtel}Hier bitte guten OC einfügen,&#10;${f.klein}und Benis farmen&#10;&#10;${f.gross}${c.neu}fick ${c.mod}dich ${c.admin}Krebs!</textarea>
         </div>
         <div id="edit-img-sidebar">
             <img src="../images/db.png" draggable="true" width="50" title="Drag Me">
@@ -90,6 +91,22 @@
                 </div>
 
             </p>
+        </fieldset>
+    </div>
+
+    <div id="options">
+        <fieldset>
+            <legend>Optionen</legend>
+            <p><label for="fixed-size" class="field">Feste Bildgröße: </label><input type="checkbox" id="fixed-size"></p>
+            <div id="fixed-size-toggle" style="display:none">
+                <p><label for="fixed-width" class="field">Breite: </label><input type="number" id="fixed-width"></p>
+                <p><label for="fixed-height" class="field">Höhe: </label><input type="number" id="fixed-height"></p>
+                <p><label for="preview" class="field">Vorschaufenster: </label><input type="checkbox" id="preview"></p>
+                <div id="preview-toggle" style="display:none">
+                    <p><label for="preview-frame-stroke" class="field">Rahmenbreite: </label><input type="number" id="preview-frame-stroke"></p>
+                    <p><label for="preview-frame-color" class="field">Rahmenfarbe: </label><button class="btn-colored-circle" id="preview-frame-color"></button></p>
+                </div>
+            </div>
         </fieldset>
     </div>
 

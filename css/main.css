@@ -89,6 +89,17 @@ input[type=checkbox], input[type=radio], input[type=range] {
     bottom: 1px;
 }
 
+input[type=number] {
+    font-size: 15px;
+    font-family: sans-serif;
+    border: 1px solid #252525;
+    align-self: stretch;
+    color: var(--orange);
+    background-color: var(--richtiges-grau);
+    width: 70px;
+    height: 20px;
+}
+
 fieldset {
     border: 1px solid #252525;
     text-align: left;
@@ -276,12 +287,16 @@ p {
     float: right;
 }
 
+#flargest {
+    font-size: 25px;
+}
+
 #flarge {
-    font-size: 24px;
+    font-size: 20px;
 }
 
 #fmedium {
-    font-size: 16px;
+    font-size: 15px;
 }
 
 #fsmall {

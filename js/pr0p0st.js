@@ -7,6 +7,44 @@ $(function() {
         //ctx.textBaseline = "bottom";
         ctx.fillStyle = colors["c.schwuchtel"];
 
+        // Makes sure that the next word will fit onto the line
+        var doesWordFit = function(wordLength) {
+            // If inside of preview Frame adds previewStrokeWidth
+            if(preview &&
+                y > fixedHeight / 2 - fixedWidth / 2 + previewStrokeWidth && 
+                y < fixedHeight / 2 + fixedWidth / 2 - previewStrokeWidth) {
+                return wordLength + x + xPadding + previewStrokeWidth < fixedWidth;  
+            } else {
+                return wordLength + x + xPadding < fixedWidth;
+            }
+        }
+
+        var newLine = function() {
+            nextY += lh;
+            if(preview &&
+                nextY > fixedHeight / 2 - fixedWidth / 2 - yPadding && 
+                nextY < fixedHeight / 2 - fixedWidth / 2 + previewStrokeWidth + yPadding + lh) {
+                    // If tempY is in the top part of the frame, set y bellow it
+                    y = fixedHeight / 2 - fixedWidth / 2 + previewStrokeWidth + yPadding + lh;
+                    x = xPadding + previewStrokeWidth;
+            } else if(preview &&
+                nextY > fixedHeight / 2 - fixedWidth / 2 + previewStrokeWidth && 
+                nextY < fixedHeight / 2 + fixedWidth / 2 - previewStrokeWidth) {
+                    // If tempY is inside the frame, update it normal but offset x by strokeWidth
+                    y = nextY;
+                    x = xPadding + previewStrokeWidth; 
+            } else if(preview &&
+                nextY > fixedHeight / 2 + fixedWidth / 2 - previewStrokeWidth - yPadding && 
+                nextY < fixedHeight / 2 + fixedWidth / 2 + yPadding + lh) {
+                    // If tempY is in the bot part of the frame, set y bellow the frame and x to normal
+                    y = fixedHeight / 2 + fixedWidth / 2 + yPadding + lh;
+                    x = xPadding;  
+            } else {
+                y = nextY;
+                x = xPadding;
+            }
+            nextY = y + offset;
+        }
 
         var lines = content.text.split("\n");
         var xPadding = 15;
@@ -14,33 +52,39 @@ $(function() {
 
         var x = xPadding;
         var y = yPadding;
+        var nextY = y;
 
         var widestLine = 0;
         var widestImage = 0;
         var lowestImage = 0;
 
+        var firstLine = true;
+
+        var lh = 20, // line height
+        offset = 5; // offset after line
+
         for (var i = 0; i < lines.length; ++i) {
-            x = 10;
+            x = xPadding;
             var colorPositions = {};
             var fontPositions = [];
             var markerRe = /\${(.*?)}/;
 
-            var lh = 0, // line height
-                offset = 0; // offset after line
-            if(lines[i].search("f.gross")>0) {
-                lh = 45;
-                offset = 15
+            if(lines[i].search("f.riesig")>0) {
+                lh = 75;
+                offset = 25;
+            } else if(lines[i].search("f.gross")>0) {
+                lh = 37;
+                offset = 8;
             } else if (lines[i].search("f.normal")>0) {
-                lh = 20;
+                lh = 17;
                 offset = 5;
             } else if (lines[i].search("f.klein")>0) {
-                lh = 15;
+                lh = 13;
                 offset = 3;
-            } else {
-                lh = 20;
-                offset = 5;
             }
-            y += lh;
+
+            newLine();
+            firstLine = false;
 
             while ((match = markerRe.exec(lines[i])) != null) {
                 if (match[1].substring(0,2) === "c.") {
@@ -51,29 +95,53 @@ $(function() {
                 lines[i] = lines[i].replace(markerRe, "");
             }
 
+            var words = lines[i].split(" ");
+            var prevChars = 0;
 
-            for (var c = 0; c <= lines[i].length; ++c) {
-                var chr = lines[i].charAt(c);
-                if (c in colorPositions) {
-                    ctx.fillStyle = colors[colorPositions[c]];
+            var wordsInLine = 0;
+
+            for(var w = 0; w < words.length; ++w) {  
+                if(w != words.length - 1) {
+                    words[w] = words[w] + " ";
                 }
-                if (c in fontPositions) {
-                    ctx.font = fonts[fontPositions[c]];
-                    if (fontPositions[c] == "f.gross") {
-                        lineHeight = 65;
-                    } else if (fontPositions[c] == "f.normal") {
-                        lineHeight = 25;
-                    } else if (fontPositions[c] == "f.klein") {
-                        lineHeight = 18;
+
+                if(fixedSize) {
+                    var wordLength = 0;
+                    for (var c = 0; c <= words[w].length; ++c) {
+                        var pos = prevChars + c;
+                        var chr = words[w].charAt(c);
+                        if (pos in fontPositions) {
+                            ctx.font = fonts[fontPositions[pos]];
+                        }
+                        wordLength += ctx.measureText(chr).width;
                     }
-
+                    if(!doesWordFit(wordLength)) {
+                        if(wordsInLine != 0) {
+                            newLine();
+                        }
+                        wordsInLine = 0;
+                    } else {
+                        wordsInLine++;
+                    }
                 }
+                
 
-                ctx.fillText(chr, x, y);
-                x += ctx.measureText(chr).width;
+                for (var c = 0; c <= words[w].length; ++c) {
+                    var pos = prevChars + c;
+                    var chr = words[w].charAt(c);
+                    if (pos in colorPositions) {
+                        ctx.fillStyle = colors[colorPositions[pos]];
+                    }
+                    if (pos in fontPositions) {
+                        ctx.font = fonts[fontPositions[pos]];
+                    }
+    
+                    var charLength = ctx.measureText(chr).width;
+                    ctx.fillText(chr, x, y);
+                    x += charLength;
+                }
+                prevChars += words[w].length;
             }
-
-            y += offset;
 
             if ((x + xPadding) > widestLine) {
                 widestLine = x + xPadding;
@@ -81,7 +149,8 @@ $(function() {
 
         }
 
-        y += yPadding; // spacing bottom
+        // spacing bottom
+        y += yPadding;
 
         //Images
         for (var f = 0;f < content.images.length; ++f) {
@@ -99,17 +168,45 @@ $(function() {
             lowestImage = img.size.height + img.pos.y + yPadding > lowestImage ? img.size.height + img.pos.y + yPadding : lowestImage;
         }
 
+        //Preview Rectangle
+        if(preview) {
+            ctx.lineWidth = previewStrokeWidth;
+            ctx.strokeStyle = previewColor;
+            ctx.strokeRect(previewStrokeWidth / 2,
+                fixedHeight / 2 - fixedWidth / 2 + previewStrokeWidth / 2,
+                fixedWidth - previewStrokeWidth,
+                fixedWidth - previewStrokeWidth);
+        }
+
         //Canvas resize
         var widestElement = widestLine > widestImage ? widestLine : widestImage;
         var highestElement = y > lowestImage ? y : lowestImage;
+        var maxY = 0;
 
-        if (widestElement > 1052) {
-            $('#warn').html("<p>Warnung: pr0-Content ist 1052px breit, dieses Bild ist jedoch "+Math.ceil(widestElement)+"px breit!</p>");
-            $('#warn p').attr('unselectable', 'on').css('user-select', 'none').on('selectstart', false);
-            $('#warn').css("display", "block");
-        } else {
-            $('#warn').html('');
-            $('#warn').css("display", "none");
+        if(fixedSize) {
+            widestElement = fixedWidth;
+            maxY = highestElement;
+            highestElement = fixedHeight;
+        }
+
+        if(!previewColorPickMode) {
+            if (preview && fixedWidth > fixedHeight) {
+                $('#warn').html("<p>Warnung: Vorschaubild kann nur generiert werden wenn die Höhe größer ist als die Breite!</p>");
+                $('#warn p').attr('unselectable', 'on').css('user-select', 'none').on('selectstart', false);
+                $('#warn').css("display", "block");
+            } else if (fixedSize && maxY > fixedHeight) {
+                $('#warn').html("<p>Warnung: Der Text passt nicht auf die Bildgröße, es könnte sein das dieser unten abgeschnitten ist ...</p>");
+                $('#warn p').attr('unselectable', 'on').css('user-select', 'none').on('selectstart', false);
+                $('#warn').css("display", "block");
+                
+            } else if (widestElement > 1052) {
+                $('#warn').html("<p>Warnung: pr0-Content ist 1052px breit, dieses Bild ist jedoch "+Math.ceil(widestElement)+"px breit!</p>");
+                $('#warn p').attr('unselectable', 'on').css('user-select', 'none').on('selectstart', false);
+                $('#warn').css("display", "block");
+            } else {
+                $('#warn').html('');
+                $('#warn').css("display", "none");
+            }
         }
 
         if ((widestElement | 0) != ctx.canvas.width || (highestElement | 0) != ctx.canvas.height) {
@@ -137,7 +234,7 @@ $(function() {
         "c.mittel": "#addc8d",
         "c.alt-mod": "#7fc7ff",        
     };
-    var fonts = {"f.klein": "bold 14px 'Helvetica Neue', Helvetica, sans-serif", "f.normal": "bold 20px 'Helvetica Neue', Helvetica, sans-serif", "f.gross": "bold 60px 'Helvetica Neue', Helvetica, sans-serif"};
+    var fonts = {"f.klein": "bold 14px 'Helvetica Neue', Helvetica, sans-serif","f.normal": "bold 22px 'Helvetica Neue', Helvetica, sans-serif", "f.gross": "bold 50px 'Helvetica Neue', Helvetica, sans-serif", "f.riesig": "bold 100px 'Helvetica Neue', Helvetica, sans-serif"};
     var content = {"text": textArea.val(), "images": []};
     var draggingImage = -1;
     var draggingResizer = {corner: -1, image: -1};
@@ -145,6 +242,39 @@ $(function() {
     var startY = 0;
     var withAnchors = true;
     var keepAspectRatio = true;
+
+    var fixedSize = false;
+    var fixedWidth = 1052;
+    var fixedHeight = 1052;
+
+    var preview = false;
+    var previewStrokeWidth = 50;
+    var previewColor = colors["c.orange"];
+    var previewColorPickMode = false;
+
+    $("#fixed-width").val(fixedWidth);
+    $("#fixed-height").val(fixedHeight);
+    $("#preview-frame-stroke").val(previewStrokeWidth);
+    $('#preview-frame-color').css("background", previewColor)
+
+    var setPreviewColorPickMode = function(newVal) {
+        previewColorPickMode = newVal;
+        if(previewColorPickMode) {
+            $('#warn').html("<p>Information: Du bist derzeit im Rahmenfarben Auswahlmodus.<br>Wähle direkt unter diesem Text eine Farbe aus, oder drücke erneut auf den Rahmenfarbe Knopf um diesen zu beenden.</p>");
+            $('#warn p').attr('unselectable', 'on').css('user-select', 'none').on('selectstart', false);
+            $('#warn').css("display", "block");
+        } else {
+            $('#warn').html('');
+            $('#warn').css("display", "none");
+        }
+    }
+
+    var setPreviewFrameColor = function(colorName) {
+        previewColor = colors[colorName];
+        setPreviewColorPickMode(false);
+        drawContent(content, ctx.canvas.width, ctx.canvas.height);
+        $('#preview-frame-color').css("background", previewColor);
+    }
 
     var ctx = pr0Canvas[0].getContext('2d');
 
@@ -163,12 +293,59 @@ $(function() {
         withAnchors = !!$(this).is(":checked");
         drawContent(content, ctx.canvas.width, ctx.canvas.height);
     });
+
     $("#cb-keep-image-aspect").on("change",function() {
         keepAspectRatio = !!$(this).is(":checked");
     });
 
     $("#a-refresh-size").on("click", function () {
         refreshCanvasDownloadSizeLabel();
+    });
+
+    $("#fixed-size").on("change", function () {
+        fixedSize = !!$(this).is(":checked");
+        if(!fixedSize) {
+            preview = false;
+            $("#preview").prop("checked", false);
+            $("#preview-toggle").css("display", preview? "block": "none");
+        }
+        $("#fixed-size-toggle").css("display", fixedSize? "block": "none");
+
+        drawContent(content, ctx.canvas.width, ctx.canvas.height);
+    });
+
+    $("#fixed-width").on("change", function () {
+        let inputWidth = Number($(this).val());
+        if(inputWidth > 0 && inputWidth < 65536) {
+            fixedWidth = inputWidth;
+            if(fixedSize) {
+                drawContent(content, ctx.canvas.width, ctx.canvas.height);
+            }
+        }
+    });
+
+    $("#fixed-height").on("change", function () {
+        let inputHeight = Number($(this).val());
+        if(inputHeight > 0 && inputHeight < 65536) {
+            fixedHeight = inputHeight;
+            if(fixedSize) {
+                drawContent(content, ctx.canvas.width, ctx.canvas.height);
+            }
+        }
+    });
+
+    $("#preview").on("change", function () {
+        preview = !!$(this).is(":checked");
+        drawContent(content, ctx.canvas.width, ctx.canvas.height);
+        $("#preview-toggle").css("display", preview? "block": "none");
+    });
+
+    $("#preview-frame-stroke").on("change", function () {
+        let inputWidth = Number($(this).val());
+        if(inputWidth > 0 && inputWidth < fixedWidth/2) {
+            previewStrokeWidth = inputWidth;
+            drawContent(content, ctx.canvas.width, ctx.canvas.height);
+        }
     });
 
     pr0Canvas.on('dragover', function (e) {
@@ -473,7 +650,9 @@ $(function() {
         var file = e.target.files[0];
         insertImageOnPosition(file,  10, -1); // -1 = bottom
     });
-
+    $('#flargest').click(function() {
+        addTextAtCursor('${f.riesig}');
+    });
     $('#flarge').click(function() {
         addTextAtCursor('${f.gross}');
     });
@@ -484,37 +663,81 @@ $(function() {
         addTextAtCursor('${f.klein}');
     });
     $('.btn-colored-circle.fliese').on('click', function() {
-        addTextAtCursor('${c.fliese}');
+        if(!previewColorPickMode) {
+            addTextAtCursor('${c.fliese}');
+        } else {
+            setPreviewFrameColor('c.fliese');
+        }
     });
     $('.btn-colored-circle.banned').on('click', function() {
-        addTextAtCursor('${c.banned}');
+        if(!previewColorPickMode) {
+            addTextAtCursor('${c.banned}');
+        } else {
+            setPreviewFrameColor('c.banned');
+        }
     });
     $('.btn-colored-circle.orange').on('click', function() {
-        addTextAtCursor('${c.orange}');
+        if(!previewColorPickMode) {
+            addTextAtCursor('${c.orange}');
+        } else {
+            setPreviewFrameColor('c.orange');
+        }
     });
     $('.btn-colored-circle.schwuchtel').on('click', function() {
-        addTextAtCursor('${c.schwuchtel}');
+        if(!previewColorPickMode) {
+            addTextAtCursor('${c.schwuchtel}');
+        } else {
+            setPreviewFrameColor('c.schwuchtel');
+        }
     });
     $('.btn-colored-circle.neuschwuchtel').on('click', function() {
-        addTextAtCursor('${c.neu}');
+        if(!previewColorPickMode) {
+            addTextAtCursor('${c.neu}');
+        } else {
+            setPreviewFrameColor('c.neu');
+        }
     });
     $('.btn-colored-circle.pr0mium').on('click', function() {
-        addTextAtCursor('${c.pr0mium}');
+        if(!previewColorPickMode) {
+            addTextAtCursor('${c.pr0mium}');
+        } else {
+            setPreviewFrameColor('c.pr0mium');
+        }
     });
     $('.btn-colored-circle.altschwuchtel').on('click', function() {
-        addTextAtCursor('${c.alt}');
+        if(!previewColorPickMode) {
+            addTextAtCursor('${c.alt}');
+        } else {
+            setPreviewFrameColor('c.alt');
+        }
     });
     $('.btn-colored-circle.moderator').on('click', function() {
-        addTextAtCursor('${c.mod}');
+        if(!previewColorPickMode) {
+            addTextAtCursor('${c.mod}');
+        } else {
+            setPreviewFrameColor('c.mod');
+        }
     });
     $('.btn-colored-circle.alt-moderator').on('click', function() {
-        addTextAtCursor('${c.alt-mod}');
+        if(!previewColorPickMode) {
+            addTextAtCursor('${c.alt-mod}');
+        } else {
+            setPreviewFrameColor('c.alt-mod');
+        }
     });
     $('.btn-colored-circle.admin').on('click', function() {
-        addTextAtCursor('${c.admin}');
+        if(!previewColorPickMode) {
+            addTextAtCursor('${c.admin}');
+        } else {
+            setPreviewFrameColor('c.admin');
+        }
     });
     $('.btn-colored-circle.mittelaltschwuchtel').on('click', function() {
-        addTextAtCursor('${c.mittel}');
+        if(!previewColorPickMode) {
+            addTextAtCursor('${c.mittel}');
+        } else {
+            setPreviewFrameColor('c.mittel');
+        }
     });
     $('#closeHelp').on('click', function() {
         $('#modalHelp').fadeOut("fast");
@@ -530,5 +753,8 @@ $(function() {
             drawContent(content, ctx.canvas.width, ctx.canvas.height);
             refreshCanvasDownloadSizeLabel();
         }
+    });
+    $('#preview-frame-color').click(function() {
+        setPreviewColorPickMode(!previewColorPickMode);
     });
 });
