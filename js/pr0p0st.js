@@ -619,7 +619,7 @@ $(function() {
     function refreshCanvasDownloadSizeLabel() {
         var binaryImage = dataURLtoBlob(pr0Canvas[0].toDataURL("image/png"));
         var size = (binaryImage.size / (1024 * 1024)).toFixed(2);
-        var percentage =  100 - Math.round( size / 0.12);
+        var percentage =  100 - Math.round( size / 0.40);
         $("#div-image-info-size-cover").css("width", percentage + "%");
         $("#div-image-info-size-cover span").html(size + " MB");
     }
